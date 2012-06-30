@@ -102,7 +102,7 @@ Add some speed keys etc to org-mode:
 "~/org/gtd.org" "~/org/work.org" "~/org/personal.org"
 "~/org/health.org")))
 #+end_src
-_
+
 
 * Copy and Paste from clipboard
 Allow copying from Xwindow clipboard
