@@ -5,7 +5,7 @@
 
 Turns on flymake in python-mode
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 ;; flymake
 (when (load "flymake" t) 
  (defun flymake-pyflakes-init () 
@@ -24,12 +24,12 @@ Turns on flymake in python-mode
 
 ;; turn on flymake for python mode
 (add-hook 'python-mode-hook 'flymake-mode-on)
-#+end_src
+#+END_SRC
 * Electric Pairs
 Install electric pairs for Python Mode. This snippet seems to work
 when I do "eval-region", but does not load during starter-kit load.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 ;;; Electric Pairs
 (add-hook 'python-mode-hook
      (lambda ()
@@ -43,27 +43,27 @@ when I do "eval-region", but does not load during starter-kit load.
   (interactive)
   (let (parens-require-spaces)
     (insert-pair)))
-#+end_src
+#+END_SRC
 * Font size
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (set-default-font "Monospace-12")
-#+end_src
+#+END_SRC
 
 * Font-lock mode
 Set font-lock mode
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 ;; turn on font-lock mode
 (when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))
 (setq font-lock-maximum-decoration t)
-#+end_src
+#+END_SRC
 
 * starter-kit load
 Load some starter-kit files
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq ipython-command "/usr/local/bin/ipython")
 (setq py-python-command "/usr/local/bin/ipython")
 (yas/load-directory (expand-file-name "snippets" "~/.emacs.d/"))
@@ -72,12 +72,12 @@ Load some starter-kit files
 (starter-kit-load "misc")
 (starter-kit-load "python")
 (starter-kit-load "eshell")
-#+end_src
+#+END_SRC
 
 * org-mode enhancements
 Add some speed keys etc to org-mode:
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
@@ -102,7 +102,7 @@ Add some speed keys etc to org-mode:
 "~/org/absences.org" "~/org/notes.org" "~/org/someday.org"
 "~/org/gtd.org" "~/org/work.org" "~/org/personal.org"
 "~/org/health.org"))
-#+end_src
+#+END_SRC
 
 * Code blocks
 This activates a number of widely used languages, you are encouraged
@@ -131,34 +131,34 @@ fontification.
 * Copy and Paste from clipboard
 Allow copying from Xwindow clipboard
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq x-select-enable-clipboard t)
-#+end_src
+#+END_SRC
 
 * ANSI colour mode for shell
 Turn on ansi color mode for emacs shell.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-#+end_src
+#+END_SRC
 
 * Use unified diffs
 Default to unified diffs
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq diff-switches "-u")
-#+end_src
+#+END_SRC
 * Auto-complete
 Add auto-complete functionality.
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (require 'auto-complete)
 (require 'auto-complete-config)
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (global-auto-complete-mode t)
 (ac-config-default)
-#+end_src
+#+END_SRC
 * Anything
 
 Anything http://www.emacswiki.org/emacs/download/anything.el
