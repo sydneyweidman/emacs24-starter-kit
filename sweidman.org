@@ -1,13 +1,53 @@
 #+TITLE: Sydney Weidman's Dotemacs
 #+OPTIONS: toc:nil num:nil ^:nil
 
-* starter-kit load
-Load some starter-kit files
+* Flymake
+
+Turns on flymake in python-mode
 
 #+begin_src emacs-lisp
-(setq ipython-command "/usr/local/bin/ipython")
-(setq py-python-command "/usr/local/bin/ipython")
-(starter-kit-load "org" "python")
+;; flymake
+(when (load "flymake" t) 
+ (defun flymake-pyflakes-init () 
+ (let* ((temp-file (flymake-init-create-temp-buffer-copy 
+ 'flymake-create-temp-inplace)) 
+ (local-file (file-relative-name 
+ temp-file 
+ (file-name-directory buffer-file-name)))) 
+ (list "pyflakes" (list local-file)))) 
+ 
+ (add-to-list 'flymake-allowed-file-name-masks 
+ '("\\.py\\'" flymake-pyflakes-init))) 
+
+;; flymake error display enhancements
+(require 'flymake-cursor)
+
+;; turn on flymake for python mode
+(add-hook 'python-mode-hook 'flymake-mode-on)
+#+end_src
+* Electric Pairs
+Install electric pairs for Python Mode. This snippet seems to work
+when I do "eval-region", but does not load during starter-kit load.
+
+#+begin_src emacs-lisp
+;;; Electric Pairs
+(add-hook 'python-mode-hook
+     (lambda ()
+      (define-key python-mode-map "\"" 'electric-pair)
+      (define-key python-mode-map "\'" 'electric-pair)
+      (define-key python-mode-map "(" 'electric-pair)
+      (define-key python-mode-map "[" 'electric-pair)
+      (define-key python-mode-map "{" 'electric-pair)))
+(defun electric-pair ()
+  "Insert character pair without surrounding spaces"
+  (interactive)
+  (let (parens-require-spaces)
+    (insert-pair)))
+#+end_src
+* Font size
+
+#+begin_src emacs-lisp
+(set-default-font "Monospace-12")
 #+end_src
 
 * Font-lock mode
@@ -19,6 +59,50 @@ Set font-lock mode
   (global-font-lock-mode t))
 (setq font-lock-maximum-decoration t)
 #+end_src
+
+* starter-kit load
+Load some starter-kit files
+
+#+begin_src emacs-lisp
+(setq ipython-command "/usr/local/bin/ipython")
+(setq py-python-command "/usr/local/bin/ipython")
+(yas/load-directory (expand-file-name "snippets" "~/.emacs.d/"))
+(starter-kit-load "org")
+(starter-kit-load "misc-recommended" "window-system")
+(starter-kit-load "python")
+(starter-kit-load "eshell")
+#+end_src
+
+* org-mode enhancements
+Add some speed keys etc to org-mode:
+
+#+begin_src emacs-lisp
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(add-hook 'org-mode-hook 'turn-on-font-lock)  ; Org buffers only
+(setq org-link-abbrev-alist
+      '(("sysgeneral" . "https://serenity.uwinnipeg.ca/projects/env/ticket/")
+	("cybrary3"   . "https://serenity.uwinnipeg.ca/projects/cybrary3/ticket/")
+	("ir"         . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
+	("librarycat" . "https://serenity.uwinnipeg.ca/projects/librarycat/ticket/")
+	("journals"   . "https://serenity.uwinnipeg.ca/projects/journals/ticket/")
+	("sakaitrac"  . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
+	("pubwrkstns" . "https://serenity.uwinnipeg.ca/projects/libpubwrkstns/ticket/")))
+; I prefer return to activate a link
+(setq org-return-follows-link t)
+; Org speed commands
+(setq org-use-speed-commands t)
+(setq org-agenda-custom-commands
+    '(("w" todo "WAITING" nil)
+      ("n" todo "NEXT" nil)
+      ("d" "Agenda + Next Actions" ((agenda) (todo "NEXT")))))
+ '(org-agenda-files (quote ("~/org/journal.org" "~/org/birthdays.org"
+"~/org/absences.org" "~/org/notes.org" "~/org/someday.org"
+"~/org/gtd.org" "~/org/work.org" "~/org/personal.org"
+"~/org/health.org")))
+#+end_src
+_
 
 * Copy and Paste from clipboard
 Allow copying from Xwindow clipboard
@@ -40,3 +124,25 @@ Default to unified diffs
 #+begin_src emacs-lisp
 (setq diff-switches "-u")
 #+end_src
+* Auto-complete
+Add auto-complete functionality.
+
+#+begin_src emacs-lisp
+(require 'auto-complete)
+(require 'auto-complete-config)
+
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(global-auto-complete-mode t)
+(ac-config-default)
+#+end_src
+* Anything
+
+Anything http://www.emacswiki.org/emacs/download/anything.el
+
+#+BEGIN_SRC emacs-lisp
+(require 'anything-config)
+(require 'anything-match-plugin)
+(global-set-key "\C-cs" 'anything)
+(global-set-key "\C-ce" 'anything-for-files)
+#+END_SRC
+
