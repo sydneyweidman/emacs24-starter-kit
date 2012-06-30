@@ -1,0 +1,20 @@
+#+TITLE: Config Items Not Working
+* Electric Pairs
+Install electric pairs for Python Mode. This snippet seems to work
+when I do "eval-region", but does not load during starter-kit load.
+
+#+begin_src emacs-lisp
+;;; Electric Pairs
+(add-hook 'python-mode-hook
+     (lambda ()
+      (define-key python-mode-map "\"" 'electric-pair)
+      (define-key python-mode-map "\'" 'electric-pair)
+      (define-key python-mode-map "(" 'electric-pair)
+      (define-key python-mode-map "[" 'electric-pair)
+      (define-key python-mode-map "{" 'electric-pair)))
+(defun electric-pair ()
+  "Insert character pair without surrounding spaces"
+  (interactive)
+  (let (parens-require-spaces)
+    (insert-pair)))
+#+end_src
