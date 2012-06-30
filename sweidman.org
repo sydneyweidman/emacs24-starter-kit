@@ -1,0 +1,42 @@
+#+TITLE: Sydney Weidman's Dotemacs
+#+OPTIONS: toc:nil num:nil ^:nil
+
+* starter-kit load
+Load some starter-kit files
+
+#+begin_src emacs-lisp
+(setq ipython-command "/usr/local/bin/ipython")
+(setq py-python-command "/usr/local/bin/ipython")
+(starter-kit-load "org" "python")
+#+end_src
+
+* Font-lock mode
+Set font-lock mode
+
+#+begin_src emacs-lisp
+;; turn on font-lock mode
+(when (fboundp 'global-font-lock-mode)
+  (global-font-lock-mode t))
+(setq font-lock-maximum-decoration t)
+#+end_src
+
+* Copy and Paste from clipboard
+Allow copying from Xwindow clipboard
+
+#+begin_src emacs-lisp
+(setq x-select-enable-clipboard t)
+#+end_src
+
+* ANSI colour mode for shell
+Turn on ansi color mode for emacs shell.
+
+#+begin_src emacs-lisp
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+#+end_src
+
+* Use unified diffs
+Default to unified diffs
+
+#+begin_src emacs-lisp
+(setq diff-switches "-u")
+#+end_src
