@@ -69,6 +69,7 @@ Load some starter-kit files
 (yas/load-directory (expand-file-name "snippets" "~/.emacs.d/"))
 (starter-kit-load "org")
 (starter-kit-load "misc-recommended")
+(starter-kit-load "misc")
 (starter-kit-load "python")
 (starter-kit-load "eshell")
 #+end_src
@@ -102,6 +103,29 @@ Add some speed keys etc to org-mode:
 "~/org/gtd.org" "~/org/work.org" "~/org/personal.org"
 "~/org/health.org"))
 #+end_src
+
+* Code blocks
+This activates a number of widely used languages, you are encouraged
+to activate more languages using the customize interface for the
+`=org-babel-load-languages=' variable, or with an elisp form like the
+one below.  The customize interface of `=org-babel-load-languages='
+contains an up to date list of the currently supported languages.
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (sh . t)
+     (python . t)))
+#+end_src
+
+This line should preserve indentation for Python and allow native
+fontification.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-src-preserve-indentation t)
+(setq org-src-fontify-natively t)
+#+END_SRC
+
 
 * Copy and Paste from clipboard
 Allow copying from Xwindow clipboard
@@ -145,3 +169,61 @@ Anything http://www.emacswiki.org/emacs/download/anything.el
 (global-set-key "\C-ce" 'anything-for-files)
 #+END_SRC
 
+* Pymacs and Rope
+For automating emacs via Python and for Python code refactoring, code
+assist, etc.
+
+#+BEGIN_SRC emacs-lisp
+;; Add pymacs dir to load-path
+(add-to-list 'load-path "~/working/uw/src")
+(progn (cd "~/working/uw/src")
+       (normal-top-level-add-subdirs-to-load-path))
+(progn (cd "~/"))
+
+;; Initialize Pymacs
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+
+;; Initialize Rope
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-enable-autoimport t)
+(setq ropemacs-autoimport-modules '("os" "os.path"))
+
+;; Configure auto-complete for rope
+(ac-ropemacs-setup)
+#+END_SRC
+* pylookup
+For looking up python stuff in the html docs.
+
+#+BEGIN_SRC emacs-lisp
+;; pylookup: Python documentation indexer
+(setq pylookup-dir "~/.emacs.d/vendor/pylookup")
+(add-to-list 'load-path pylookup-dir)
+
+;; load pylookup when compile time
+(eval-when-compile (require 'pylookup))
+
+;; set executable file and db file
+(setq pylookup-program (concat pylookup-dir "/pylookup.py"))
+(setq pylookup-db-file (concat pylookup-dir "/pylookup.db"))
+
+;; set search option if you want
+;; (setq pylookup-search-options '("--insensitive" "0" "--desc" "0"))
+
+;; to speedup, just load it on demand
+(autoload 'pylookup-lookup "pylookup"
+  "Lookup SEARCH-TERM in the Python HTML indexes." t)
+
+(autoload 'pylookup-update "pylookup"
+  "Run pylookup-update and create the database at `pylookup-db-file'." t)
+(global-set-key "\C-ch" 'pylookup-lookup)
+#+END_SRC
+* Set browser
+Use firefox
+
+#+BEGIN_SRC emacs-lisp
+(setq browse-url-browser-function 'browse-url-firefox)
+#+END_SRC
