@@ -68,7 +68,7 @@ Load some starter-kit files
 (setq py-python-command "/usr/local/bin/ipython")
 (yas/load-directory (expand-file-name "snippets" "~/.emacs.d/"))
 (starter-kit-load "org")
-(starter-kit-load "misc-recommended" "window-system")
+(starter-kit-load "misc-recommended")
 (starter-kit-load "python")
 (starter-kit-load "eshell")
 #+end_src
@@ -97,12 +97,11 @@ Add some speed keys etc to org-mode:
     '(("w" todo "WAITING" nil)
       ("n" todo "NEXT" nil)
       ("d" "Agenda + Next Actions" ((agenda) (todo "NEXT")))))
- '(org-agenda-files (quote ("~/org/journal.org" "~/org/birthdays.org"
+(setq org-agenda-files '("~/org/journal.org" "~/org/birthdays.org"
 "~/org/absences.org" "~/org/notes.org" "~/org/someday.org"
 "~/org/gtd.org" "~/org/work.org" "~/org/personal.org"
-"~/org/health.org")))
+"~/org/health.org"))
 #+end_src
-
 
 * Copy and Paste from clipboard
 Allow copying from Xwindow clipboard
