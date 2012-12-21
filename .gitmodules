@@ -1,3 +1,12 @@
 [submodule "externals/Pymacs"]
 	path = externals/Pymacs
 	url = https://github.com/pinard/Pymacs.git
+[submodule "externals/rope"]
+	path = externals/rope
+	url = https://github.com/cataliniacob/rope.git
+[submodule "externals/ropemacs"]
+	path = externals/ropemacs
+	url = https://github.com/cataliniacob/ropemacs.git
+[submodule "externals/pylookup"]
+	path = externals/pylookup
+	url = https://github.com/tsgates/pylookup.git

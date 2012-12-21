@@ -176,8 +176,9 @@ assist, etc.
 
 #+BEGIN_SRC emacs-lisp
 ;; Add pymacs dir to load-path
-(add-to-list 'load-path "~/working/uw/src")
-(progn (cd "~/working/uw/src")
+(add-to-list 'load-path "~/.emacs.d/externals/Pymacs")
+(add-to-list 'load-path "~/.emacs.d/externals/ropemacs")
+(progn (cd "~/.emacs.d/src")
        (normal-top-level-add-subdirs-to-load-path))
 (progn (cd "~/"))
 
@@ -201,7 +202,7 @@ For looking up python stuff in the html docs.
 
 #+BEGIN_SRC emacs-lisp
 ;; pylookup: Python documentation indexer
-(setq pylookup-dir "~/.emacs.d/vendor/pylookup")
+(setq pylookup-dir "~/.emacs.d/externals/pylookup")
 (add-to-list 'load-path pylookup-dir)
 
 ;; load pylookup when compile time
