@@ -10,6 +10,7 @@ places
 .svn
 .DS_Store
 tramp
+session.*
 
 ## directories
 backups/*

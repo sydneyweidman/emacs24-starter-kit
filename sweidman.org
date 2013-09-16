@@ -1,6 +1,20 @@
 #+TITLE: Sydney Weidman's Dotemacs
 #+OPTIONS: toc:nil num:nil ^:nil
 
+* Marmalade
+
+Try Marmalade for package installs. Added for use with [[https://github.com/tkf/emacs-jedi][Jedi]]
+
+Added <2013-08-11 Sun>
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(add-to-list 'package-archives 
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+(package-initialize)
+#+END_SRC
+
 * Flymake
 
 Turns on flymake in python-mode
@@ -170,33 +184,18 @@ Anything http://www.emacswiki.org/emacs/download/anything.el
 (global-set-key "\C-ce" 'anything-for-files)
 #+END_SRC
 
-* Pymacs and Rope
-For automating emacs via Python and for Python code refactoring, code
-assist, etc.
+* Jedi
+
+Python completion and code assist for emacs
 
 #+BEGIN_SRC emacs-lisp
-;; Add pymacs dir to load-path
-(add-to-list 'load-path "~/.emacs.d/externals/Pymacs")
-(add-to-list 'load-path "~/.emacs.d/externals/ropemacs")
-(progn (cd "~/.emacs.d/src")
-       (normal-top-level-add-subdirs-to-load-path))
-(progn (cd "~/"))
-
-;; Initialize Pymacs
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-
-;; Initialize Rope
-(pymacs-load "ropemacs" "rope-")
-(setq ropemacs-enable-autoimport t)
-(setq ropemacs-autoimport-modules '("os" "os.path"))
-
-;; Configure auto-complete for rope
-(ac-ropemacs-setup)
+(add-to-list 'load-path "~/.emacs.d/externals/emacs-jedi")
+(require 'jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:setup-keys t)
+(setq jedi:complete-on-dot t)
 #+END_SRC
+
 * pylookup
 For looking up python stuff in the html docs.
 
@@ -228,4 +227,14 @@ Use firefox
 
 #+BEGIN_SRC emacs-lisp
 (setq browse-url-browser-function 'browse-url-firefox)
+#+END_SRC
+* Turn menu-bar on
+
+#+BEGIN_SRC emacs-lisp 
+(menu-bar-mode 1)
+#+END_SRC
+
+* Start emacs server
+#+BEGIN_SRC emacs-lisp 
+(server-start)
 #+END_SRC
