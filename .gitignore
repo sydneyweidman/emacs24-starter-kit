@@ -25,6 +25,7 @@ src/*
 themes/*
 url/*
 virtenv/*
+emacs-virtual-env/*
 
 ## exported and encrypted files
 *gpg

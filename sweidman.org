@@ -1,6 +1,20 @@
 #+TITLE: Sydney Weidman's Dotemacs
 #+OPTIONS: toc:nil num:nil ^:nil
 
+* NOTE
+Some manual installation is required:
+** pylookup
+   - Download: https://github.com/tsgates/pylookup.git
+   - Run 'make download' in the pylookup directory
+
+** jedi
+   - Install virtualenv and activate it. jedi requires VIRTUAL_ENV to be set.
+   - Run 'make requirements' in the elpa/jedi directory
+** pyflakes
+ 
+   - You must run 'pip install pyflakes' from within the virtual env
+     you are using.
+
 * Marmalade
 
 Try Marmalade for package installs. Added for use with [[https://github.com/tkf/emacs-jedi][Jedi]]
@@ -184,13 +198,13 @@ Anything http://www.emacswiki.org/emacs/download/anything.el
 (global-set-key "\C-ce" 'anything-for-files)
 #+END_SRC
 
-* Jedi
+* jedi
 
 Python completion and code assist for emacs
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/externals/emacs-jedi")
-(require 'jedi)
+(when (not (require 'jedi nil t))
+    (package-install 'jedi))
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:setup-keys t)
 (setq jedi:complete-on-dot t)
