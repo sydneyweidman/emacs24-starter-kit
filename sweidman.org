@@ -53,25 +53,6 @@ Turns on flymake in python-mode
 ;; turn on flymake for python mode
 (add-hook 'python-mode-hook 'flymake-mode-on)
 #+END_SRC
-* Electric Pairs
-Install electric pairs for Python Mode. This snippet seems to work
-when I do "eval-region", but does not load during starter-kit load.
-
-#+BEGIN_SRC emacs-lisp
-;;; Electric Pairs
-(add-hook 'python-mode-hook
-     (lambda ()
-      (define-key python-mode-map "\"" 'electric-pair)
-      (define-key python-mode-map "\'" 'electric-pair)
-      (define-key python-mode-map "(" 'electric-pair)
-      (define-key python-mode-map "[" 'electric-pair)
-      (define-key python-mode-map "{" 'electric-pair)))
-(defun electric-pair ()
-  "Insert character pair without surrounding spaces"
-  (interactive)
-  (let (parens-require-spaces)
-    (insert-pair)))
-#+END_SRC
 * Font size
 
 #+BEGIN_SRC emacs-lisp
@@ -248,7 +229,22 @@ Use firefox
 (menu-bar-mode 1)
 #+END_SRC
 
-* Start emacs server
-#+BEGIN_SRC emacs-lisp 
-(server-start)
+* Electric Pairs
+Install electric pairs for Python Mode. This snippet seems to work
+when I do "eval-region", but does not load during starter-kit load.
+
+#+BEGIN_SRC emacs-lisp
+;;; Electric Pairs
+(add-hook 'python-mode-hook
+     (lambda ()
+      (define-key python-mode-map "\"" 'electric-pair)
+      (define-key python-mode-map "\'" 'electric-pair)
+      (define-key python-mode-map "(" 'electric-pair)
+      (define-key python-mode-map "[" 'electric-pair)
+      (define-key python-mode-map "{" 'electric-pair)))
+(defun electric-pair ()
+  "Insert character pair without surrounding spaces"
+  (interactive)
+  (let (parens-require-spaces)
+    (insert-pair)))
 #+END_SRC
