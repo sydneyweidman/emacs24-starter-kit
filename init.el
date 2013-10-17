@@ -8,7 +8,7 @@
 ;; remember this directory
 (setq starter-kit-dir
       (file-name-directory (or load-file-name (buffer-file-name))))
-
+(require 'org)
 ;; load up the starter kit
 (org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))
 
