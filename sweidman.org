@@ -101,12 +101,22 @@ Add some speed keys etc to org-mode:
 	("pubwrkstns" . "https://serenity.uwinnipeg.ca/projects/libpubwrkstns/ticket/")))
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
+; Let org help me catch invisible edits
+(setq org-catch-invisible-edits t)
+; Don't output xml validation during html export
+(setq org-export-html-validation-link nil)
+; Set up capture
+(setq org-default-notes-file (concat org-directory "~/org/notes.org"))
+     (define-key global-map "\C-cc" 'org-capture)
 ; Org speed commands
 (setq org-use-speed-commands t)
 (setq org-agenda-custom-commands
     '(("w" todo "WAITING" nil)
       ("n" todo "NEXT" nil)
       ("d" "Agenda + Next Actions" ((agenda) (todo "NEXT")))))
+(setq org-clock-persist 'history)
+(setq org-clock-persist t)
+(org-clock-persistence-insinuate)
 (setq org-agenda-files '("~/org/journal.org" "~/org/birthdays.org"
 "~/org/absences.org" "~/org/notes.org" "~/org/someday.org"
 "~/org/gtd.org" "~/org/work.org" "~/org/personal.org"
@@ -217,6 +227,10 @@ For looking up python stuff in the html docs.
   "Run pylookup-update and create the database at `pylookup-db-file'." t)
 (global-set-key "\C-ch" 'pylookup-lookup)
 #+END_SRC
+
+#+RESULTS:
+: pylookup-lookup
+
 * Set browser
 Use firefox
 
