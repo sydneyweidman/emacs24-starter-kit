@@ -1,6 +1,0 @@
-[submodule "externals/pylookup"]
-	path = externals/pylookup
-	url = https://github.com/tsgates/pylookup.git
-[submodule "externals/pyflakes"]
-	path = externals/pyflakes
-	url = https://github.com/kevinw/pyflakes.git
