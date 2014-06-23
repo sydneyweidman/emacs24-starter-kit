@@ -1,0 +1,267 @@
+#+TITLE: Starter Kit Extras
+#+OPTIONS: toc:nil num:nil ^:nil
+
+* Additional Steps Required for Starter Kit Extras
+
+Some manual installation is required:
+
+** pylookup
+   - Download: https://github.com/tsgates/pylookup.git
+   - Run 'make download' in the pylookup directory
+
+** jedi
+   - Install virtualenv and activate it. jedi requires VIRTUAL_ENV to be set.
+   - Run 'make requirements' in the elpa/jedi directory
+
+** pyflakes
+ 
+   - You must run 'pip install pyflakes' from within the virtual env
+     you are using.
+
+* Marmalade
+
+Try Marmalade for package installs. Added for use with [[https://github.com/tkf/emacs-jedi][Jedi]]
+
+Added <2013-08-11 Sun>
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(add-to-list 'package-archives 
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+(package-initialize)
+#+END_SRC
+
+* Flymake
+
+Turns on flymake in python-mode
+
+#+BEGIN_SRC emacs-lisp
+;; flymake
+(when (load "flymake" t) 
+ (defun flymake-pyflakes-init () 
+ (let* ((temp-file (flymake-init-create-temp-buffer-copy 
+ 'flymake-create-temp-inplace)) 
+ (local-file (file-relative-name 
+ temp-file 
+ (file-name-directory buffer-file-name)))) 
+ (list "pyflakes" (list local-file)))) 
+ 
+ (add-to-list 'flymake-allowed-file-name-masks 
+ '("\\.py\\'" flymake-pyflakes-init))) 
+
+;; flymake error display enhancements
+(require 'flymake-cursor)
+
+;; turn on flymake for python mode
+(add-hook 'python-mode-hook 'flymake-mode-on)
+#+END_SRC
+* Font size
+
+#+BEGIN_SRC emacs-lisp
+(set-default-font "Monospace-12")
+#+END_SRC
+
+* Font-lock mode
+Set font-lock mode
+
+#+BEGIN_SRC emacs-lisp
+;; turn on font-lock mode
+(when (fboundp 'global-font-lock-mode)
+  (global-font-lock-mode t))
+(setq font-lock-maximum-decoration t)
+#+END_SRC
+
+* starter-kit load
+Load some starter-kit files
+
+#+BEGIN_SRC emacs-lisp
+(setq ipython-command "/usr/local/bin/ipython")
+(setq py-python-command "/usr/local/bin/ipython")
+(yas/load-directory (expand-file-name "snippets" "~/.emacs.d/"))
+(starter-kit-load "org")
+(starter-kit-load "misc-recommended")
+(starter-kit-load "misc")
+(starter-kit-load "python")
+(starter-kit-load "eshell")
+#+END_SRC
+
+* org-mode enhancements
+Add some speed keys etc to org-mode:
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(add-hook 'org-mode-hook 'turn-on-font-lock)  ; Org buffers only
+(setq org-link-abbrev-alist
+      '(("sysgeneral" . "https://serenity.uwinnipeg.ca/projects/env/ticket/")
+	("cybrary3"   . "https://serenity.uwinnipeg.ca/projects/cybrary3/ticket/")
+	("ir"         . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
+	("librarycat" . "https://serenity.uwinnipeg.ca/projects/librarycat/ticket/")
+	("journals"   . "https://serenity.uwinnipeg.ca/projects/journals/ticket/")
+	("sakaitrac"  . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
+	("pubwrkstns" . "https://serenity.uwinnipeg.ca/projects/libpubwrkstns/ticket/")))
+; I prefer return to activate a link
+(setq org-return-follows-link t)
+; Let org help me catch invisible edits
+(setq org-catch-invisible-edits t)
+; Don't output xml validation during html export
+(setq org-export-html-validation-link nil)
+; Set up capture
+(setq org-default-notes-file (concat org-directory "~/org/notes.org"))
+     (define-key global-map "\C-cc" 'org-capture)
+; Org speed commands
+(setq org-use-speed-commands t)
+(setq org-agenda-custom-commands
+    '(("w" todo "WAITING" nil)
+      ("n" todo "NEXT" nil)
+      ("d" "Agenda + Next Actions" ((agenda) (todo "NEXT")))))
+(setq org-clock-persist 'history)
+(setq org-clock-persist t)
+(org-clock-persistence-insinuate)
+(setq org-agenda-files '("~/org/journal.org" "~/org/birthdays.org"
+"~/org/absences.org" "~/org/notes.org" "~/org/someday.org"
+"~/org/gtd.org" "~/org/work.org" "~/org/personal.org"
+"~/org/health.org"))
+#+END_SRC
+
+* Code blocks
+This activates a number of widely used languages, you are encouraged
+to activate more languages using the customize interface for the
+`=org-babel-load-languages=' variable, or with an elisp form like the
+one below.  The customize interface of `=org-babel-load-languages='
+contains an up to date list of the currently supported languages.
+
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (sh . t)
+     (python . t)))
+#+END_SRC
+
+This line should preserve indentation for Python and allow native
+fontification.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-src-preserve-indentation t)
+(setq org-src-fontify-natively t)
+#+END_SRC
+
+
+* Copy and Paste from clipboard
+Allow copying from Xwindow clipboard
+
+#+BEGIN_SRC emacs-lisp
+(setq x-select-enable-clipboard t)
+#+END_SRC
+
+* ANSI colour mode for shell
+Turn on ansi color mode for emacs shell.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+#+END_SRC
+
+* Use unified diffs
+Default to unified diffs
+
+#+BEGIN_SRC emacs-lisp
+(setq diff-switches "-u")
+#+END_SRC
+* Auto-complete
+Add auto-complete functionality.
+
+#+BEGIN_SRC emacs-lisp
+(require 'auto-complete)
+(require 'auto-complete-config)
+
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(global-auto-complete-mode t)
+(ac-config-default)
+#+END_SRC
+* Anything
+
+Anything http://www.emacswiki.org/emacs/download/anything.el
+
+#+BEGIN_SRC emacs-lisp
+(require 'anything-config)
+(require 'anything-match-plugin)
+(global-set-key "\C-cs" 'anything)
+(global-set-key "\C-ce" 'anything-for-files)
+#+END_SRC
+
+* jedi
+
+Python completion and code assist for emacs
+
+#+BEGIN_SRC emacs-lisp
+(when (not (require 'jedi nil t))
+    (package-install 'jedi))
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:setup-keys t)
+(setq jedi:complete-on-dot t)
+#+END_SRC
+
+* pylookup
+For looking up python stuff in the html docs.
+
+#+BEGIN_SRC emacs-lisp
+;; pylookup: Python documentation indexer
+(setq pylookup-dir "~/.emacs.d/externals/pylookup")
+(add-to-list 'load-path pylookup-dir)
+
+;; load pylookup when compile time
+(eval-when-compile (require 'pylookup))
+
+;; set executable file and db file
+(setq pylookup-program (concat pylookup-dir "/pylookup.py"))
+(setq pylookup-db-file (concat pylookup-dir "/pylookup.db"))
+
+;; set search option if you want
+;; (setq pylookup-search-options '("--insensitive" "0" "--desc" "0"))
+
+;; to speedup, just load it on demand
+(autoload 'pylookup-lookup "pylookup"
+  "Lookup SEARCH-TERM in the Python HTML indexes." t)
+
+(autoload 'pylookup-update "pylookup"
+  "Run pylookup-update and create the database at `pylookup-db-file'." t)
+(global-set-key "\C-ch" 'pylookup-lookup)
+#+END_SRC
+
+#+RESULTS:
+: pylookup-lookup
+
+* Set browser
+Use firefox
+
+#+BEGIN_SRC emacs-lisp
+(setq browse-url-browser-function 'browse-url-firefox)
+#+END_SRC
+* Turn menu-bar on
+
+#+BEGIN_SRC emacs-lisp 
+(menu-bar-mode 1)
+#+END_SRC
+
+* Electric Pairs
+Install electric pairs for Python Mode. This snippet seems to work
+when I do "eval-region", but does not load during starter-kit load.
+
+#+BEGIN_SRC emacs-lisp
+;;; Electric Pairs
+(add-hook 'python-mode-hook
+     (lambda ()
+      (define-key python-mode-map "\"" 'electric-pair)
+      (define-key python-mode-map "\'" 'electric-pair)
+      (define-key python-mode-map "(" 'electric-pair)
+      (define-key python-mode-map "[" 'electric-pair)
+      (define-key python-mode-map "{" 'electric-pair)))
+(defun electric-pair ()
+  "Insert character pair without surrounding spaces"
+  (interactive)
+  (let (parens-require-spaces)
+    (insert-pair)))
+#+END_SRC
