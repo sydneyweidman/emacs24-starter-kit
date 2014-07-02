@@ -7,11 +7,48 @@ Some manual installation is required:
 
 ** pylookup
    - Download: https://github.com/tsgates/pylookup.git
+   - Replace pylookup/makefile with the following makefile:
+     #+BEGIN_SRC makefile
+VER := $(shell python --version 2>&1 | grep -o "[0-9].[0-9].[0-9]")
+MAJOR_VERSION = $(shell python -version 2>&1 | grep -o "Python [0-9]")
+ZIP := python-${VER}-docs-html.zip
+URL := http://docs.python.org/py3k/archives/${ZIP}
+URL2:= http://docs.python.org/ftp/python/doc/${VER}/${ZIP}
+
+ifneq (2,${MAJOR_VERSION})
+	URL := ${URL2}
+endif
+
+download:
+	@if [ ! -e ${ZIP} ] ; then     \
+		echo "Downloading ${URL}"; \
+		wget --no-check-certificate ${URL};               \
+		unzip ${ZIP};              \
+	fi
+	./pylookup.py -u $(ZIP:.zip=)
+
+.PHONY: download
+     #+END_SRC
    - Run 'make download' in the pylookup directory
 
 ** jedi
-   - Install virtualenv and activate it. jedi requires VIRTUAL_ENV to be set.
-   - Run 'make requirements' in the elpa/jedi directory
+
+#+BEGIN_SRC sh
+git clone https://github.com/tkf/emacs-python-environment
+git clone https://github.com/tkf/emacs-jedi
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+; Clone packages using git:
+; git clone https://github.com/tkf/emacs-python-environment
+; git clone https://github.com/tkf/emacs-jedi
+; see [[Additional Steps Required]]
+(add-to-list 'load-path (concat starter-kit-dir "/emacs-python-environment"))
+(add-to-list 'load-path (concat starter-kit-dir "/emacs-jedi"))
+(require 'python-environment)
+(require 'jedi)
+;; then run "M-x jedi:install-server"
+#+END_SRC
 
 ** pyflakes
  
@@ -72,20 +109,6 @@ Set font-lock mode
 (setq font-lock-maximum-decoration t)
 #+END_SRC
 
-* starter-kit load
-Load some starter-kit files
-
-#+BEGIN_SRC emacs-lisp
-(setq ipython-command "/usr/local/bin/ipython")
-(setq py-python-command "/usr/local/bin/ipython")
-(yas/load-directory (expand-file-name "snippets" "~/.emacs.d/"))
-(starter-kit-load "org")
-(starter-kit-load "misc-recommended")
-(starter-kit-load "misc")
-(starter-kit-load "python")
-(starter-kit-load "eshell")
-#+END_SRC
-
 * org-mode enhancements
 Add some speed keys etc to org-mode:
 
@@ -94,14 +117,6 @@ Add some speed keys etc to org-mode:
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 (add-hook 'org-mode-hook 'turn-on-font-lock)  ; Org buffers only
-(setq org-link-abbrev-alist
-      '(("sysgeneral" . "https://serenity.uwinnipeg.ca/projects/env/ticket/")
-	("cybrary3"   . "https://serenity.uwinnipeg.ca/projects/cybrary3/ticket/")
-	("ir"         . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
-	("librarycat" . "https://serenity.uwinnipeg.ca/projects/librarycat/ticket/")
-	("journals"   . "https://serenity.uwinnipeg.ca/projects/journals/ticket/")
-	("sakaitrac"  . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
-	("pubwrkstns" . "https://serenity.uwinnipeg.ca/projects/libpubwrkstns/ticket/")))
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 ; Let org help me catch invisible edits
@@ -120,10 +135,6 @@ Add some speed keys etc to org-mode:
 (setq org-clock-persist 'history)
 (setq org-clock-persist t)
 (org-clock-persistence-insinuate)
-(setq org-agenda-files '("~/org/journal.org" "~/org/birthdays.org"
-"~/org/absences.org" "~/org/notes.org" "~/org/someday.org"
-"~/org/gtd.org" "~/org/work.org" "~/org/personal.org"
-"~/org/health.org"))
 #+END_SRC
 
 * Code blocks
@@ -181,6 +192,7 @@ Add auto-complete functionality.
 (global-auto-complete-mode t)
 (ac-config-default)
 #+END_SRC
+
 * Anything
 
 Anything http://www.emacswiki.org/emacs/download/anything.el
@@ -193,14 +205,13 @@ Anything http://www.emacswiki.org/emacs/download/anything.el
 #+END_SRC
 
 * jedi
-
-Python completion and code assist for emacs
-
 #+BEGIN_SRC emacs-lisp
-(when (not (require 'jedi nil t))
-    (package-install 'jedi))
+(add-to-list 'load-path (concat starter-kit-dir "/emacs-python-environment"))
+(add-to-list 'load-path (concat starter-kit-dir "/emacs-jedi"))
+(require 'python-environment)
+(require 'jedi)
+;; Standard Jedi.el setting
 (add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:setup-keys t)
 (setq jedi:complete-on-dot t)
 #+END_SRC
 
@@ -209,7 +220,7 @@ For looking up python stuff in the html docs.
 
 #+BEGIN_SRC emacs-lisp
 ;; pylookup: Python documentation indexer
-(setq pylookup-dir "~/.emacs.d/externals/pylookup")
+(setq pylookup-dir (concat starter-kit-dir "/pylookup"))
 (add-to-list 'load-path pylookup-dir)
 
 ;; load pylookup when compile time
