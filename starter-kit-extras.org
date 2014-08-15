@@ -96,7 +96,7 @@ Turns on flymake in python-mode
 * Font size
 
 #+BEGIN_SRC emacs-lisp
-(set-default-font "Monospace-12")
+(set-default-font "Monospace-14")
 #+END_SRC
 
 * Font-lock mode
@@ -148,7 +148,7 @@ contains an up to date list of the currently supported languages.
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (sh . t)
+     (shell . t)
      (python . t)))
 #+END_SRC
 
@@ -159,7 +159,6 @@ fontification.
 (setq org-src-preserve-indentation t)
 (setq org-src-fontify-natively t)
 #+END_SRC
-
 
 * Copy and Paste from clipboard
 Allow copying from Xwindow clipboard
@@ -193,6 +192,25 @@ Add auto-complete functionality.
 (ac-config-default)
 #+END_SRC
 
+* rope, ropemacs, Pymacs
+
+  See [[http://milkbox.net/note/installing-pymacs-rope-on-emacs-24/][instructions for installing]]
+
+#+BEGIN_SRC emacs-lisp
+(push (concat (getenv "VIRTUAL_ENV") "/bin") exec-path)
+(setenv "PATH"
+        (concat
+         (concat (getenv "VIRTUAL_ENV") "/bin") ":"
+         (getenv "PATH")
+         ))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(ac-ropemacs-initialize)
+(add-to-list 'load-path (concat (getenv "VIRTUAL_ENV") "/src/pymacs"))
+(ac-ropemacs-setup)
+(add-to-list 'ac-sources 'ac-source-ropemacs)
+#+END_SRC
 * Anything
 
 Anything http://www.emacswiki.org/emacs/download/anything.el
