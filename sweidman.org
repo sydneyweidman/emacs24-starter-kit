@@ -1,0 +1,31 @@
+* starter-kit load
+Load some starter-kit files
+
+#+BEGIN_SRC emacs-lisp
+(delete "/home/sweidman/Applications/share/emacs/24.3/lisp/org" load-path)
+(add-to-list 'load-path "/home/sweidman/elisp/org-mode/lisp")
+(yas/load-directory (expand-file-name "snippets" starter-kit-dir))
+(starter-kit-load "org")
+(starter-kit-load "misc-recommended")
+(starter-kit-load "misc")
+(starter-kit-load "python")
+(starter-kit-load "eshell")
+(starter-kit-load "extras")
+#+END_SRC
+
+
+* org-mode personalisation
+#+BEGIN_SRC emacs-lisp
+(setq org-link-abbrev-alist
+      '(("sysgeneral" . "https://serenity.uwinnipeg.ca/projects/env/ticket/")
+	("cybrary3"   . "https://serenity.uwinnipeg.ca/projects/cybrary3/ticket/")
+	("ir"         . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
+	("librarycat" . "https://serenity.uwinnipeg.ca/projects/librarycat/ticket/")
+	("journals"   . "https://serenity.uwinnipeg.ca/projects/journals/ticket/")
+	("sakaitrac"  . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
+	("pubwrkstns" . "https://serenity.uwinnipeg.ca/projects/libpubwrkstns/ticket/")))
+(setq org-agenda-files '("~/org/journal.org" "~/org/birthdays.org"
+"~/org/absences.org" "~/org/notes.org" "~/org/someday.org"
+"~/org/gtd.org" "~/org/work.org" "~/org/personal.org"
+"~/org/health.org"))
+#+END_SRC
