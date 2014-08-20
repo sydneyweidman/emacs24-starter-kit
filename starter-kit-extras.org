@@ -210,6 +210,16 @@ Add auto-complete functionality.
 
   See [[http://milkbox.net/note/installing-pymacs-rope-on-emacs-24/][instructions for installing]]
 
+#+BEGIN_SRC shell
+pip install rope ropemacs
+pip install -e "git+https://github.com/pinard/Pymacs.git#egg=Pymacs"
+cd $VIRTUAL_ENV/src/pymacs
+make
+# Pymacs.el
+cd $HOME/elisp
+git clone https://github.com/pinard/Pymacs.git
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
 (push (concat (getenv "VIRTUAL_ENV") "/bin") exec-path)
 (setenv "PATH"
