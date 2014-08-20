@@ -33,10 +33,23 @@ download:
 
 ** jedi
 
-#+BEGIN_SRC sh
+#+BEGIN_SRC shell
 git clone https://github.com/tkf/emacs-python-environment
 git clone https://github.com/tkf/emacs-jedi
+if [ ! -d $HOME/elisp ] ; then
+    mkdir $HOME/elisp
+fi
+cd $HOME/elisp
+git clone git://orgmode.org/org-mode.git
+cd org-mode
+make
 #+END_SRC
+
+You will also need to replace elpa/concurrent-0.3.1/concurrent.el with
+this:
+
+https://raw.githubusercontent.com/kiwanami/emacs-deferred/master/concurrent.el
+
 
 #+BEGIN_SRC emacs-lisp
 ; Clone packages using git:
@@ -47,6 +60,7 @@ git clone https://github.com/tkf/emacs-jedi
 (add-to-list 'load-path (concat starter-kit-dir "/emacs-jedi"))
 (require 'python-environment)
 (require 'jedi)
+;; then run "M-x package-install deferred" and "M-x package-install epc"
 ;; then run "M-x jedi:install-server"
 #+END_SRC
 
