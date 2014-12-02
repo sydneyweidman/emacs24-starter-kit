@@ -149,6 +149,9 @@ Add some speed keys etc to org-mode:
 (setq org-clock-persist 'history)
 (setq org-clock-persist t)
 (org-clock-persistence-insinuate)
+
+; Org Export suppress "validate" link
+(setq org-html-validation-link nil)
 #+END_SRC
 
 * Code blocks
