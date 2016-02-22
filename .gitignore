@@ -4,13 +4,14 @@
 ## misc
 loaddefs.el*
 auto-save-list
-ac-comphist.dat
 custom.el
 places
 .svn
 .DS_Store
 tramp
-session.*
+.smex-items
+ac-comphist.dat
+ido.last
 
 ## directories
 backups/*
@@ -24,8 +25,6 @@ elpa/*
 src/*
 themes/*
 url/*
-virtenv/*
-emacs-virtual-env/*
 
 ## exported and encrypted files
 *gpg
@@ -55,4 +54,8 @@ secret.org
 .emacs.desktop*
 .*~
 agent/*
-/emacs
+
+## package directory
+!literate-starter-kit-pkg.el
+literate-starter-kit/
+literate-starter-kit.tar
