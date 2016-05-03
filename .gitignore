@@ -61,3 +61,6 @@ literate-starter-kit/
 literate-starter-kit.tar
 *.sav
 snippets
+/%backup%~
+.python-environments/
+/bookmarks

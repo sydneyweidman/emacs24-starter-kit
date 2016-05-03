@@ -1,0 +1,17 @@
+#+TITLE: Emacs personal customizations
+* Load extras
+#+BEGIN_SRC emacs-lisp
+  (starter-kit-load "extras")
+#+END_SRC
+* org-mode personalisation
+#+BEGIN_SRC emacs-lisp
+(setq org-link-abbrev-alist
+      '(("sysgeneral" . "https://serenity.uwinnipeg.ca/projects/env/ticket/")
+	("cybrary3"   . "https://serenity.uwinnipeg.ca/projects/cybrary3/ticket/")
+	("ir"         . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
+	("librarycat" . "https://serenity.uwinnipeg.ca/projects/librarycat/ticket/")
+	("journals"   . "https://serenity.uwinnipeg.ca/projects/journals/ticket/")
+	("sakaitrac"  . "https://serenity.uwinnipeg.ca/projects/ir/ticket/")
+	("pubwrkstns" . "https://serenity.uwinnipeg.ca/projects/libpubwrkstns/ticket/")))
+(setq org-agenda-files '("~/org/work.org" "~/org/personal.org"))
+#+END_SRC
