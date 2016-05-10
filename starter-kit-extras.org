@@ -6,6 +6,7 @@
   (starter-kit-load "js")
   (starter-kit-load "lisp")
   (starter-kit-load "misc-recommended")
+  (starter-kit-load "ox")
   (starter-kit-load "org")
   (starter-kit-load "python")
 #+END_SRC
@@ -113,31 +114,7 @@ Use firefox
 #+BEGIN_SRC emacs-lisp
 (setq browse-url-browser-function 'browse-url-firefox)
 #+END_SRC
-* COMMENT Export functions
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "src/org-mode/lisp")
-(setq org-export-backends (quote (
-                                  beamer
-                                  ascii
-                                  html
-                                  icalendar
-                                  latex
-                                  man
-                                  md
-                                  texinfo
-                                  publish
-                                  rss
-                                  s5
-                                  deck
-                                  )))
-#+END_SRC
-* Turn menu-bar on
-
-#+BEGIN_SRC emacs-lisp 
-(menu-bar-mode 1)
-#+END_SRC
-
-d* Electric Pairs
+* Electric Pairs
 Install electric pairs for Python Mode. This snippet seems to work
 when I do "eval-region", but does not load during starter-kit load.
 
