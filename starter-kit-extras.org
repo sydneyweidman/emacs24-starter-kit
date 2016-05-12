@@ -95,6 +95,7 @@ Based on http://www.pybloggers.com/emacs-the-best-python-editor/
 
 (defvar myPackages
   '(better-defaults
+    elpy
     material-theme))
 
 (mapc #'(lambda (package)
@@ -109,6 +110,11 @@ Based on http://www.pybloggers.com/emacs-the-best-python-editor/
 (load-theme 'material t) ;; load material theme
 
 ;; init.el ends here
+#+END_SRC
+* Elpy
+#+BEGIN_SRC emacs-lisp
+(require 'elpy)
+(elpy-enable)
 #+END_SRC
 * Skip
 :PROPERTIES:
