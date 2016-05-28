@@ -1,10 +1,8 @@
 #+TITLE: Starter Kit Extras
 #+OPTIONS: toc:nil num:nil ^:nil
-<<<<<<< HEAD
 * Export configuration
 #+BEGIN_SRC emacs-lisp
-  (load-file "/home/sweidman/elisp/org-mode/lisp/org-compat.el")
-  (add-to-list 'load-path "/home/sweidman/elisp/org-mode/contrib/lisp")
+  (add-to-list 'load-path "$ORG_HOME/contrib/lisp")
   (require 'ox)
   (require 'ox-ascii)
   (require 'ox-beamer)
@@ -21,7 +19,6 @@
   (require 'ox-rss)
   (require 'ox-s5)
 #+END_SRC
-=======
 * Basics
 #+BEGIN_SRC emacs-lisp
   (starter-kit-load "eshell")
@@ -96,12 +93,6 @@ contains an up to date list of the currently supported languages.
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-<<<<<<< HEAD
-     (sh . t)
-     (python . t)))
-#+END_SRC
-
-=======
      (shell . t)
      (python . t)
      (ditaa . t)
@@ -110,10 +101,6 @@ contains an up to date list of the currently supported languages.
      (css . t)))
 #+END_SRC
 
-#+RESULTS:
-: ((emacs-lisp . t) (sh . t) (python . t) (js . t) (css . t))
-
->>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
 This line should preserve indentation for Python and allow native
 fontification.
 
@@ -136,36 +123,18 @@ Turn on ansi color mode for emacs shell.
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 #+END_SRC
 
-<<<<<<< HEAD
-=======
 * eshell initialization
 
 #+BEGIN_SRC emacs-lisp
 (setq eshell-output-filter-functions '())
 #+END_SRC
 
->>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
-* Use unified diffs
-Default to unified diffs
-
-#+BEGIN_SRC emacs-lisp
-(setq diff-switches "-u")
-#+END_SRC
-* Set browser
-Use firefox
-
-#+BEGIN_SRC emacs-lisp
-(setq browse-url-browser-function 'browse-url-firefox)
-#+END_SRC
-<<<<<<< HEAD
 * Turn menu-bar on
 
 #+BEGIN_SRC emacs-lisp 
 (menu-bar-mode 1)
 #+END_SRC
 
-=======
->>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
 * Electric Pairs
 Install electric pairs for Python Mode. This snippet seems to work
 when I do "eval-region", but does not load during starter-kit load.
@@ -186,11 +155,11 @@ when I do "eval-region", but does not load during starter-kit load.
     (insert-pair)))
 #+END_SRC
 
-<<<<<<< HEAD
 * Better Defaults
 Based on http://www.pybloggers.com/emacs-the-best-python-editor/
 
 #+BEGIN_SRC emacs-lisp
+
 ;; init.el --- Emacs configuration
 
 ;; INSTALL PACKAGES
@@ -396,7 +365,7 @@ For looking up python stuff in the html docs.
 
 #+RESULTS:
 : pylookup-lookup
-=======
+
 * Expand region
 
   - https://github.com/magnars/expand-region.el
@@ -470,5 +439,3 @@ For looking up python stuff in the html docs.
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 #+END_SRC
-g
->>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
