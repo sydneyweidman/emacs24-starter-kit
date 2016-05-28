@@ -48,6 +48,7 @@ mail
 *.SCORE
 marks
 .session
+session.*
 abbrev_defs
 scratch
 secret.org
@@ -59,3 +60,9 @@ agent/*
 !literate-starter-kit-pkg.el
 literate-starter-kit/
 literate-starter-kit.tar
+*.sav
+snippets
+/%backup%~
+.python-environments/
+/bookmarks
+/history
