@@ -232,11 +232,7 @@ Turns on flymake in python-mode
 ;; turn on flymake for python mode
 (add-hook 'python-mode-hook 'flymake-mode-on)
 #+END_SRC
-* Skip
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-** org-mode enhancements
+* org-mode enhancements
 Add some speed keys etc to org-mode:
 
 #+BEGIN_SRC emacs-lisp
@@ -267,6 +263,10 @@ Add some speed keys etc to org-mode:
 (setq org-html-validation-link nil)
 #+END_SRC
 
+* Skip
+:PROPERTIES:
+:header-args: :tangle no
+:END:
 ** Auto-complete
 Add auto-complete functionality.
 
