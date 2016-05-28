@@ -2,7 +2,6 @@
 #+OPTIONS: toc:nil num:nil ^:nil
 * Export functions
 #+BEGIN_SRC emacs-lisp
-  (load-file "/home/sweidman/.emacs.d/src/org-mode/lisp/org-compat.el")
   (require 'ox)
   (require 'ox-beamer)
   (require 'ox-ascii)
