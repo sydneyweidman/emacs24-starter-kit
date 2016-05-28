@@ -129,12 +129,6 @@ Turn on ansi color mode for emacs shell.
 (setq eshell-output-filter-functions '())
 #+END_SRC
 
-* Turn menu-bar on
-
-#+BEGIN_SRC emacs-lisp 
-(menu-bar-mode 1)
-#+END_SRC
-
 * Electric Pairs
 Install electric pairs for Python Mode. This snippet seems to work
 when I do "eval-region", but does not load during starter-kit load.
