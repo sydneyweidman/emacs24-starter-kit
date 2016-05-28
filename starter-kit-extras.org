@@ -205,7 +205,8 @@ Based on http://www.pybloggers.com/emacs-the-best-python-editor/
 
 (add-hook 'python-mode-hook
           (lambda ()
-            (setq-local company-backends '((cmpany-capf company-jedi company-dabbrev-code company-files)))))
+            (setq-local company-backends '((company-capf company-jedi company-dabbrev-code company-files)))))
+(add-hook 'after-init-hook 'global-company-mode)
 #+END_SRC
 * Flymake
 
@@ -417,14 +418,6 @@ For looking up python stuff in the html docs.
   (require 'py-autopep8)
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
   (setq elpy-rpc-backend "jedi")
-#+END_SRC
-
-* company mode
-#+BEGIN_SRC emacs-lisp
-  (require 'company)
-  (require 'company-anaconda)
-  (global-company-mode)
-  (add-hook 'after-init-hook 'global-company-mode)
 #+END_SRC
 
 * Save history
