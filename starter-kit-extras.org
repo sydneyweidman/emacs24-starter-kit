@@ -207,12 +207,7 @@ Based on http://www.pybloggers.com/emacs-the-best-python-editor/
           (lambda ()
             (setq-local company-backends '((cmpany-capf company-jedi company-dabbrev-code company-files)))))
 #+END_SRC
-* Skip
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-
-** Flymake
+* Flymake
 
 Turns on flymake in python-mode
 
@@ -236,6 +231,10 @@ Turns on flymake in python-mode
 ;; turn on flymake for python mode
 (add-hook 'python-mode-hook 'flymake-mode-on)
 #+END_SRC
+* Skip
+:PROPERTIES:
+:header-args: :tangle no
+:END:
 ** org-mode enhancements
 Add some speed keys etc to org-mode:
 
