@@ -1,118 +1,15 @@
 #+TITLE: Starter Kit Extras
 #+OPTIONS: toc:nil num:nil ^:nil
-
-* Additional Steps Required for Starter Kit Extras
-
-Some manual installation is required:
-
-** pylookup
-   - Download: https://github.com/tsgates/pylookup.git
-   - Replace pylookup/makefile with the following makefile:
-     #+BEGIN_SRC makefile
-VER := $(shell python --version 2>&1 | grep -o "[0-9].[0-9].[0-9]")
-MAJOR_VERSION = $(shell python -version 2>&1 | grep -o "Python [0-9]")
-ZIP := python-${VER}-docs-html.zip
-URL := http://docs.python.org/py3k/archives/${ZIP}
-URL2:= http://docs.python.org/ftp/python/doc/${VER}/${ZIP}
-
-ifneq (2,${MAJOR_VERSION})
-	URL := ${URL2}
-endif
-
-download:
-	@if [ ! -e ${ZIP} ] ; then     \
-		echo "Downloading ${URL}"; \
-		wget --no-check-certificate ${URL};               \
-		unzip ${ZIP};              \
-	fi
-	./pylookup.py -u $(ZIP:.zip=)
-
-.PHONY: download
-     #+END_SRC
-   - Run 'make download' in the pylookup directory
-
-** jedi
-
-#+BEGIN_SRC shell
-git clone https://github.com/tkf/emacs-python-environment
-git clone https://github.com/tkf/emacs-jedi
-if [ ! -d $HOME/elisp ] ; then
-    mkdir $HOME/elisp
-fi
-cd $HOME/elisp
-git clone git://orgmode.org/org-mode.git
-cd org-mode
-make
-#+END_SRC
-
-You will also need to replace elpa/concurrent-0.3.1/concurrent.el with
-this:
-
-https://raw.githubusercontent.com/kiwanami/emacs-deferred/master/concurrent.el
-
-
+* Basics
 #+BEGIN_SRC emacs-lisp
-; Clone packages using git:
-; git clone https://github.com/tkf/emacs-python-environment
-; git clone https://github.com/tkf/emacs-jedi
-; see [[Additional Steps Required]]
-(add-to-list 'load-path (concat starter-kit-dir "/emacs-python-environment"))
-(add-to-list 'load-path (concat starter-kit-dir "/emacs-jedi"))
-(require 'python-environment)
-(require 'jedi)
-;; then run "M-x package-install deferred" and "M-x package-install epc"
-;; then run "M-x jedi:install-server"
+  (starter-kit-load "eshell")
+  (starter-kit-load "js")
+  (starter-kit-load "lisp")
+  (starter-kit-load "misc-recommended")
+  (starter-kit-load "ox")
+  (starter-kit-load "org")
+  (starter-kit-load "python")
 #+END_SRC
-
-** pyflakes
- 
-   - You must run 'pip install pyflakes' from within the virtual env
-     you are using.
-
-* Marmalade
-
-Try Marmalade for package installs. Added for use with [[https://github.com/tkf/emacs-jedi][Jedi]]
-
-Added <2013-08-11 Sun>
-
-#+BEGIN_SRC emacs-lisp
-(require 'package)
-(add-to-list 'package-archives 
-    '("marmalade" .
-      "http://marmalade-repo.org/packages/"))
-(package-initialize)
-#+END_SRC
-
-* Flymake
-
-Turns on flymake in python-mode
-
-#+BEGIN_SRC emacs-lisp
-;; flymake
-(when (load "flymake" t) 
- (defun flymake-pyflakes-init () 
- (let* ((temp-file (flymake-init-create-temp-buffer-copy 
- 'flymake-create-temp-inplace)) 
- (local-file (file-relative-name 
- temp-file 
- (file-name-directory buffer-file-name)))) 
- (list "pyflakes" (list local-file)))) 
- 
- (add-to-list 'flymake-allowed-file-name-masks 
- '("\\.py\\'" flymake-pyflakes-init))) 
-
-;; flymake error display enhancements
-(require 'flymake-cursor)
-
-;; turn on flymake for python mode
-(add-hook 'python-mode-hook 'flymake-mode-on)
-#+END_SRC
-* Font size
-
-#+BEGIN_SRC emacs-lisp
-(set-default-font "Monospace-14")
-#+END_SRC
-
 * Font-lock mode
 Set font-lock mode
 
@@ -149,9 +46,20 @@ Add some speed keys etc to org-mode:
 (setq org-clock-persist 'history)
 (setq org-clock-persist t)
 (org-clock-persistence-insinuate)
+; Clocktable formatting
+(setq org-time-clocksum-format
+      (quote (:hours "%d"
+                     :require-hours t
+                     :minutes ":%02d"
+                     :require-minutes t)))
+; Refile targets
+(setq org-refile-targets (quote ((org-agenda-files :maxlevel . 4))))
+(setq org-refile-use-outline-path t)
+#+END_SRC
 
-; Org Export suppress "validate" link
-(setq org-html-validation-link nil)
+* Default frame alist
+#+BEGIN_SRC emacs-lisp
+  (setq default-frame-alist '((font . "Monospace-16")(width . 95)))
 #+END_SRC
 
 * Code blocks
@@ -166,8 +74,15 @@ contains an up to date list of the currently supported languages.
    'org-babel-load-languages
    '((emacs-lisp . t)
      (shell . t)
-     (python . t)))
+     (python . t)
+     (ditaa . t)
+     (sql .t)
+     (js . t)
+     (css . t)))
 #+END_SRC
+
+#+RESULTS:
+: ((emacs-lisp . t) (sh . t) (python . t) (js . t) (css . t))
 
 This line should preserve indentation for Python and allow native
 fontification.
@@ -191,117 +106,24 @@ Turn on ansi color mode for emacs shell.
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 #+END_SRC
 
+* eshell initialization
+
+#+BEGIN_SRC emacs-lisp
+(setq eshell-output-filter-functions '())
+#+END_SRC
+
 * Use unified diffs
 Default to unified diffs
 
 #+BEGIN_SRC emacs-lisp
 (setq diff-switches "-u")
 #+END_SRC
-* Auto-complete
-Add auto-complete functionality.
-
-#+BEGIN_SRC emacs-lisp
-(require 'auto-complete)
-(require 'auto-complete-config)
-
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(global-auto-complete-mode t)
-(ac-config-default)
-#+END_SRC
-
-* rope, ropemacs, Pymacs
-
-  See [[http://milkbox.net/note/installing-pymacs-rope-on-emacs-24/][instructions for installing]]
-
-#+BEGIN_SRC shell
-pip install rope ropemacs
-pip install -e "git+https://github.com/pinard/Pymacs.git#egg=Pymacs"
-cd $VIRTUAL_ENV/src/pymacs
-make
-# Pymacs.el
-cd $HOME/elisp
-git clone https://github.com/pinard/Pymacs.git
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(push (concat (getenv "VIRTUAL_ENV") "/bin") exec-path)
-(setenv "PATH"
-        (concat
-         (concat (getenv "VIRTUAL_ENV") "/bin") ":"
-         (getenv "PATH")
-         ))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(ac-ropemacs-initialize)
-(add-to-list 'load-path (concat (getenv "VIRTUAL_ENV") "/src/pymacs"))
-(ac-ropemacs-setup)
-(add-to-list 'ac-sources 'ac-source-ropemacs)
-#+END_SRC
-* Anything
-
-Anything http://www.emacswiki.org/emacs/download/anything.el
-
-#+BEGIN_SRC emacs-lisp
-(require 'anything-config)
-(require 'anything-match-plugin)
-(global-set-key "\C-cs" 'anything)
-(global-set-key "\C-ce" 'anything-for-files)
-#+END_SRC
-
-* jedi
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path (concat starter-kit-dir "/emacs-python-environment"))
-(add-to-list 'load-path (concat starter-kit-dir "/emacs-jedi"))
-(require 'python-environment)
-(require 'jedi)
-;; Standard Jedi.el setting
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-#+END_SRC
-
-* pylookup
-For looking up python stuff in the html docs.
-
-#+BEGIN_SRC emacs-lisp
-;; pylookup: Python documentation indexer
-(setq pylookup-dir (concat starter-kit-dir "/pylookup"))
-(add-to-list 'load-path pylookup-dir)
-
-;; load pylookup when compile time
-(eval-when-compile (require 'pylookup))
-
-;; set executable file and db file
-(setq pylookup-program (concat pylookup-dir "/pylookup.py"))
-(setq pylookup-db-file (concat pylookup-dir "/pylookup.db"))
-
-;; set search option if you want
-;; (setq pylookup-search-options '("--insensitive" "0" "--desc" "0"))
-
-;; to speedup, just load it on demand
-(autoload 'pylookup-lookup "pylookup"
-  "Lookup SEARCH-TERM in the Python HTML indexes." t)
-
-(autoload 'pylookup-update "pylookup"
-  "Run pylookup-update and create the database at `pylookup-db-file'." t)
-(global-set-key "\C-ch" 'pylookup-lookup)
-#+END_SRC
-
-#+RESULTS:
-: pylookup-lookup
-
 * Set browser
 Use firefox
 
 #+BEGIN_SRC emacs-lisp
 (setq browse-url-browser-function 'browse-url-firefox)
 #+END_SRC
-* Turn menu-bar on
-
-#+BEGIN_SRC emacs-lisp 
-(menu-bar-mode 1)
-#+END_SRC
-
 * Electric Pairs
 Install electric pairs for Python Mode. This snippet seems to work
 when I do "eval-region", but does not load during starter-kit load.
@@ -321,3 +143,78 @@ when I do "eval-region", but does not load during starter-kit load.
   (let (parens-require-spaces)
     (insert-pair)))
 #+END_SRC
+
+* Expand region
+
+  - https://github.com/magnars/expand-region.el
+
+#+BEGIN_SRC emacs-lisp
+;; Expand region
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+#+END_SRC
+* Turn menu-bar on
+#+BEGIN_SRC emacs-lisp 
+  (menu-bar-mode 1)
+#+END_SRC
+* Elpy and Better Defaults
+#+BEGIN_SRC emacs-lisp
+  ;; INSTALL PACKAGES
+  ;; --------------------------------------
+
+  (require 'package)
+
+  (add-to-list 'package-archives
+         '("melpa" . "http://melpa.org/packages/") t)
+
+  (package-initialize)
+  (when (not package-archive-contents)
+    (package-refresh-contents))
+
+  (defvar myPackages
+    '(better-defaults
+      elpy
+      flycheck
+      material-theme
+      py-autopep8))
+
+  (mapc #'(lambda (package)
+      (unless (package-installed-p package)
+        (package-install package)))
+        myPackages)
+
+  ;; BASIC CUSTOMIZATION
+  ;; --------------------------------------
+
+  (setq inhibit-startup-message t) ;; hide the startup message
+  (load-theme 'material t) ;; load material theme
+
+  ;; PYTHON CONFIGURATION
+  ;; --------------------------------------
+
+  (elpy-enable)
+  ;; use flycheck not flymake with elpy
+  (when (require 'flycheck nil t)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+  ;; enable autopep8 formatting on save
+  (require 'py-autopep8)
+  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+  (setq elpy-rpc-backend "jedi")
+#+END_SRC
+
+* company mode
+#+BEGIN_SRC emacs-lisp
+  (require 'company)
+  (require 'company-anaconda)
+  (global-company-mode)
+  (add-hook 'after-init-hook 'global-company-mode)
+#+END_SRC
+
+* Save history
+#+BEGIN_SRC emacs-lisp
+(savehist-mode 1)
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+#+END_SRC
+g
