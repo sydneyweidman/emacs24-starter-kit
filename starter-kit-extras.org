@@ -208,30 +208,6 @@ Based on http://www.pybloggers.com/emacs-the-best-python-editor/
             (setq-local company-backends '((company-capf company-jedi company-dabbrev-code company-files)))))
 (add-hook 'after-init-hook 'global-company-mode)
 #+END_SRC
-* Flymake
-
-Turns on flymake in python-mode
-
-#+BEGIN_SRC emacs-lisp
-;; flymake
-(when (load "flymake" t) 
- (defun flymake-pyflakes-init () 
- (let* ((temp-file (flymake-init-create-temp-buffer-copy 
- 'flymake-create-temp-inplace)) 
- (local-file (file-relative-name 
- temp-file 
- (file-name-directory buffer-file-name)))) 
- (list "pyflakes" (list local-file)))) 
- 
- (add-to-list 'flymake-allowed-file-name-masks 
- '("\\.py\\'" flymake-pyflakes-init))) 
-
-;; flymake error display enhancements
-(require 'flymake-cursor)
-
-;; turn on flymake for python mode
-(add-hook 'python-mode-hook 'flymake-mode-on)
-#+END_SRC
 * org-mode enhancements
 Add some speed keys etc to org-mode:
 
