@@ -1,0 +1,18 @@
+#+TITLE: Starter Kit Extras
+#+OPTIONS: toc:nil num:nil ^:nil
+* Export functions
+#+BEGIN_SRC emacs-lisp
+  (require 'ox)
+  (require 'ox-beamer)
+  (require 'ox-ascii)
+  (require 'ox-html)
+  (require 'ox-icalendar)
+  (require 'ox-latex)
+  (require 'ox-man)
+  (require 'ox-md)
+  (require 'ox-texinfo)
+  (require 'ox-publish)
+  (require 'ox-rss)
+  (require 'ox-s5)
+  (require 'ox-deck)
+#+END_SRC

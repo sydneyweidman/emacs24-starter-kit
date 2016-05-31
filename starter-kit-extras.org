@@ -1,5 +1,6 @@
 #+TITLE: Starter Kit Extras
 #+OPTIONS: toc:nil num:nil ^:nil
+<<<<<<< HEAD
 * Export configuration
 #+BEGIN_SRC emacs-lisp
   (load-file "/home/sweidman/elisp/org-mode/lisp/org-compat.el")
@@ -20,6 +21,70 @@
   (require 'ox-rss)
   (require 'ox-s5)
 #+END_SRC
+=======
+* Basics
+#+BEGIN_SRC emacs-lisp
+  (starter-kit-load "eshell")
+  (starter-kit-load "js")
+  (starter-kit-load "lisp")
+  (starter-kit-load "misc-recommended")
+  (starter-kit-load "ox")
+  (starter-kit-load "org")
+  (starter-kit-load "python")
+#+END_SRC
+* Font-lock mode
+Set font-lock mode
+
+#+BEGIN_SRC emacs-lisp
+;; turn on font-lock mode
+(when (fboundp 'global-font-lock-mode)
+  (global-font-lock-mode t))
+(setq font-lock-maximum-decoration t)
+#+END_SRC
+
+* org-mode enhancements
+Add some speed keys etc to org-mode:
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(add-hook 'org-mode-hook 'turn-on-font-lock)  ; Org buffers only
+; I prefer return to activate a link
+(setq org-return-follows-link t)
+; Let org help me catch invisible edits
+(setq org-catch-invisible-edits t)
+; Don't output xml validation during html export
+(setq org-export-html-validation-link nil)
+; Set up capture
+(setq org-default-notes-file (concat org-directory "~/org/notes.org"))
+     (define-key global-map "\C-cc" 'org-capture)
+; Org speed commands
+(setq org-use-speed-commands t)
+(setq org-agenda-custom-commands
+    '(("w" todo "WAITING" nil)
+      ("n" todo "NEXT" nil)
+      ("d" "Agenda + Next Actions" ((agenda) (todo "NEXT")))))
+(setq org-clock-persist 'history)
+(setq org-clock-persist t)
+(org-clock-persistence-insinuate)
+; Clocktable formatting
+(setq org-time-clocksum-format
+      (quote (:hours "%d"
+                     :require-hours t
+                     :minutes ":%02d"
+                     :require-minutes t)))
+; Refile targets
+(setq org-refile-targets (quote ((org-agenda-files :maxlevel . 4))))
+(setq org-refile-use-outline-path t)
+#+END_SRC
+
+* Default frame alist
+#+BEGIN_SRC emacs-lisp
+  (setq default-frame-alist '((font . "Monospace-16")(width . 95)))
+#+END_SRC
+
+>>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
 * Code blocks
 This activates a number of widely used languages, you are encouraged
 to activate more languages using the customize interface for the
@@ -31,10 +96,24 @@ contains an up to date list of the currently supported languages.
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
+<<<<<<< HEAD
      (sh . t)
      (python . t)))
 #+END_SRC
 
+=======
+     (shell . t)
+     (python . t)
+     (ditaa . t)
+     (sql .t)
+     (js . t)
+     (css . t)))
+#+END_SRC
+
+#+RESULTS:
+: ((emacs-lisp . t) (sh . t) (python . t) (js . t) (css . t))
+
+>>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
 This line should preserve indentation for Python and allow native
 fontification.
 
@@ -57,6 +136,15 @@ Turn on ansi color mode for emacs shell.
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 #+END_SRC
 
+<<<<<<< HEAD
+=======
+* eshell initialization
+
+#+BEGIN_SRC emacs-lisp
+(setq eshell-output-filter-functions '())
+#+END_SRC
+
+>>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
 * Use unified diffs
 Default to unified diffs
 
@@ -69,12 +157,15 @@ Use firefox
 #+BEGIN_SRC emacs-lisp
 (setq browse-url-browser-function 'browse-url-firefox)
 #+END_SRC
+<<<<<<< HEAD
 * Turn menu-bar on
 
 #+BEGIN_SRC emacs-lisp 
 (menu-bar-mode 1)
 #+END_SRC
 
+=======
+>>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
 * Electric Pairs
 Install electric pairs for Python Mode. This snippet seems to work
 when I do "eval-region", but does not load during starter-kit load.
@@ -95,6 +186,7 @@ when I do "eval-region", but does not load during starter-kit load.
     (insert-pair)))
 #+END_SRC
 
+<<<<<<< HEAD
 * Better Defaults
 Based on http://www.pybloggers.com/emacs-the-best-python-editor/
 
@@ -304,3 +396,79 @@ For looking up python stuff in the html docs.
 
 #+RESULTS:
 : pylookup-lookup
+=======
+* Expand region
+
+  - https://github.com/magnars/expand-region.el
+
+#+BEGIN_SRC emacs-lisp
+;; Expand region
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+#+END_SRC
+* Turn menu-bar on
+#+BEGIN_SRC emacs-lisp 
+  (menu-bar-mode 1)
+#+END_SRC
+* Elpy and Better Defaults
+#+BEGIN_SRC emacs-lisp
+  ;; INSTALL PACKAGES
+  ;; --------------------------------------
+
+  (require 'package)
+
+  (add-to-list 'package-archives
+         '("melpa" . "http://melpa.org/packages/") t)
+
+  (package-initialize)
+  (when (not package-archive-contents)
+    (package-refresh-contents))
+
+  (defvar myPackages
+    '(better-defaults
+      elpy
+      flycheck
+      material-theme
+      py-autopep8))
+
+  (mapc #'(lambda (package)
+      (unless (package-installed-p package)
+        (package-install package)))
+        myPackages)
+
+  ;; BASIC CUSTOMIZATION
+  ;; --------------------------------------
+
+  (setq inhibit-startup-message t) ;; hide the startup message
+  (load-theme 'material t) ;; load material theme
+
+  ;; PYTHON CONFIGURATION
+  ;; --------------------------------------
+
+  (elpy-enable)
+  ;; use flycheck not flymake with elpy
+  (when (require 'flycheck nil t)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+  ;; enable autopep8 formatting on save
+  (require 'py-autopep8)
+  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+  (setq elpy-rpc-backend "jedi")
+#+END_SRC
+
+* company mode
+#+BEGIN_SRC emacs-lisp
+  (require 'company)
+  (require 'company-anaconda)
+  (global-company-mode)
+  (add-hook 'after-init-hook 'global-company-mode)
+#+END_SRC
+
+* Save history
+#+BEGIN_SRC emacs-lisp
+(savehist-mode 1)
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+#+END_SRC
+g
+>>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
