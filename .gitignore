@@ -48,6 +48,7 @@ mail
 *.SCORE
 marks
 .session
+/session.*
 abbrev_defs
 scratch
 secret.org

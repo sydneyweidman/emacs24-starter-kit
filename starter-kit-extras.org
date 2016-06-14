@@ -46,6 +46,15 @@ Add some speed keys etc to org-mode:
 (setq org-clock-persist 'history)
 (setq org-clock-persist t)
 (org-clock-persistence-insinuate)
+; Clocktable formatting
+(setq org-time-clocksum-format
+      (quote (:hours "%d"
+                     :require-hours t
+                     :minutes ":%02d"
+                     :require-minutes t)))
+; Refile targets
+(setq org-refile-targets (quote ((org-agenda-files :maxlevel . 4))))
+(setq org-refile-use-outline-path t)
 #+END_SRC
 
 * Default frame alist
@@ -65,8 +74,10 @@ contains an up to date list of the currently supported languages.
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (sh . t)
+     (shell . t)
      (python . t)
+     (ditaa . t)
+     (sql .t)
      (js . t)
      (css . t)))
 #+END_SRC
