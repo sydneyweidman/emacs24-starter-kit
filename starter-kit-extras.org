@@ -27,7 +27,6 @@
   (starter-kit-load "misc-recommended")
   (starter-kit-load "ox")
   (starter-kit-load "org")
-  (starter-kit-load "python")
 #+END_SRC
 * Font-lock mode
 Set font-lock mode
@@ -189,6 +188,7 @@ Based on http://www.pybloggers.com/emacs-the-best-python-editor/
 #+BEGIN_SRC emacs-lisp
 (require 'elpy)
 (elpy-enable)
+(setq python-shell-interpreter "ipython")
 #+END_SRC
 
 * Company mode
@@ -238,103 +238,6 @@ Add some speed keys etc to org-mode:
 ; Org Export suppress "validate" link
 (setq org-html-validation-link nil)
 #+END_SRC
-
-* Skip
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-** Auto-complete
-Add auto-complete functionality.
-
-#+BEGIN_SRC emacs-lisp
-(require 'auto-complete)
-(require 'auto-complete-config)
-
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(global-auto-complete-mode t)
-(ac-config-default)
-#+END_SRC
-
-** rope, ropemacs, Pymacs
-
-  See [[http://milkbox.net/note/installing-pymacs-rope-on-emacs-24/][instructions for installing]]
-
-#+BEGIN_SRC shell
-pip install rope ropemacs
-pip install -e "git+https://github.com/pinard/Pymacs.git#egg=Pymacs"
-cd $VIRTUAL_ENV/src/pymacs
-make
-# Pymacs.el
-cd $HOME/elisp
-git clone https://github.com/pinard/Pymacs.git
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(push (concat (getenv "VIRTUAL_ENV") "/bin") exec-path)
-(setenv "PATH"
-        (concat
-         (concat (getenv "VIRTUAL_ENV") "/bin") ":"
-         (getenv "PATH")
-         ))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(ac-ropemacs-initialize)
-(add-to-list 'load-path (concat (getenv "VIRTUAL_ENV") "/src/pymacs"))
-(ac-ropemacs-setup)
-(add-to-list 'ac-sources 'ac-source-ropemacs)
-#+END_SRC
-** jedi
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path (concat starter-kit-dir "/emacs-python-environment"))
-(add-to-list 'load-path (concat starter-kit-dir "/emacs-jedi"))
-(require 'python-environment)
-(require 'jedi)
-;; Standard Jedi.el setting
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-#+END_SRC
-
-** Anything
-
-Anything http://www.emacswiki.org/emacs/download/anything.el
-
-#+BEGIN_SRC emacs-lisp
-(require 'anything-config)
-(require 'anything-match-plugin)
-(global-set-key "\C-cs" 'anything)
-(global-set-key "\C-ce" 'anything-for-files)
-#+END_SRC
-
-** pylookup
-For looking up python stuff in the html docs.
-
-#+BEGIN_SRC emacs-lisp
-;; pylookup: Python documentation indexer
-(setq pylookup-dir (concat starter-kit-dir "/pylookup"))
-(add-to-list 'load-path pylookup-dir)
-
-;; load pylookup when compile time
-(eval-when-compile (require 'pylookup))
-
-;; set executable file and db file
-(setq pylookup-program (concat pylookup-dir "/pylookup.py"))
-(setq pylookup-db-file (concat pylookup-dir "/pylookup.db"))
-
-;; set search option if you want
-;; (setq pylookup-search-options '("--insensitive" "0" "--desc" "0"))
-
-;; to speedup, just load it on demand
-(autoload 'pylookup-lookup "pylookup"
-  "Lookup SEARCH-TERM in the Python HTML indexes." t)
-
-(autoload 'pylookup-update "pylookup"
-  "Run pylookup-update and create the database at `pylookup-db-file'." t)
-(global-set-key "\C-ch" 'pylookup-lookup)
-#+END_SRC
-
-#+RESULTS:
-: pylookup-lookup
 
 * Expand region
 
@@ -400,4 +303,104 @@ For looking up python stuff in the html docs.
 #+BEGIN_SRC emacs-lisp
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+#+END_SRC
+
+* Skip
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+** Auto-complete
+Add auto-complete functionality.
+
+#+BEGIN_SRC emacs-lisp
+(require 'auto-complete)
+(require 'auto-complete-config)
+
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(global-auto-complete-mode t)
+(ac-config-default)
+#+END_SRC
+
+** jedi
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path (concat starter-kit-dir "/emacs-python-environment"))
+(add-to-list 'load-path (concat starter-kit-dir "/emacs-jedi"))
+(require 'python-environment)
+(require 'jedi)
+;; Standard Jedi.el setting
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+#+END_SRC
+
+** Anything
+
+Anything http://www.emacswiki.org/emacs/download/anything.el
+
+#+BEGIN_SRC emacs-lisp
+(require 'anything-config)
+(require 'anything-match-plugin)
+(global-set-key "\C-cs" 'anything)
+(global-set-key "\C-ce" 'anything-for-files)
+#+END_SRC
+
+** pylookup
+For looking up python stuff in the html docs.
+
+#+BEGIN_SRC emacs-lisp
+;; pylookup: Python documentation indexer
+(setq pylookup-dir (concat starter-kit-dir "/pylookup"))
+(add-to-list 'load-path pylookup-dir)
+
+;; load pylookup when compile time
+(eval-when-compile (require 'pylookup))
+
+;; set executable file and db file
+(setq pylookup-program (concat pylookup-dir "/pylookup.py"))
+(setq pylookup-db-file (concat pylookup-dir "/pylookup.db"))
+
+;; set search option if you want
+;; (setq pylookup-search-options '("--insensitive" "0" "--desc" "0"))
+
+;; to speedup, just load it on demand
+(autoload 'pylookup-lookup "pylookup"
+  "Lookup SEARCH-TERM in the Python HTML indexes." t)
+
+(autoload 'pylookup-update "pylookup"
+  "Run pylookup-update and create the database at `pylookup-db-file'." t)
+(global-set-key "\C-ch" 'pylookup-lookup)
+#+END_SRC
+
+#+RESULTS:
+: pylookup-lookup
+
+* El-get
+
+#+BEGIN_SRC emacs-lisp :results none
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+#+END_SRC
+* Pymacs and rope
+
+#+BEGIN_SRC emacs-lisp :results none
+;; Pymacs
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+(autoload 'pymacs-autoload "pymacs")
+
+(require 'pymacs)
+
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-confirm-saving 'nil)
+
 #+END_SRC

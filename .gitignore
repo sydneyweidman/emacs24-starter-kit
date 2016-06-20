@@ -22,6 +22,8 @@ image-dired/*
 elim/*
 doc/*
 elpa/*
+el-get/*
+semanticdb/*
 src/*
 themes/*
 url/*
@@ -53,6 +55,7 @@ scratch
 secret.org
 .emacs.desktop*
 .*~
+*~
 agent/*
 
 ## package directory
