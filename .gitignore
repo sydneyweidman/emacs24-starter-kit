@@ -22,6 +22,8 @@ image-dired/*
 elim/*
 doc/*
 elpa/*
+el-get/*
+semanticdb/*
 src/*
 themes/*
 url/*
@@ -54,15 +56,13 @@ scratch
 secret.org
 .emacs.desktop*
 .*~
+*~
 agent/*
 
 ## package directory
 !literate-starter-kit-pkg.el
 literate-starter-kit/
 literate-starter-kit.tar
-*.sav
-snippets
-/%backup%~
-.python-environments/
 /bookmarks
 /history
+/session.*

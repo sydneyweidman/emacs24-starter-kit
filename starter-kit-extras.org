@@ -1,5 +1,24 @@
 #+TITLE: Starter Kit Extras
 #+OPTIONS: toc:nil num:nil ^:nil
+* Export configuration
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "$ORG_HOME/contrib/lisp")
+  (require 'ox)
+  (require 'ox-ascii)
+  (require 'ox-beamer)
+  (require 'ox-html)
+  (require 'ox-icalendar)
+  (require 'ox-latex)
+  (require 'ox-man)
+  (require 'ox-md)
+  (require 'ox-odt)
+  (require 'ox-publish)
+  (require 'ox-texinfo)
+  (require 'ox-deck)
+  (require 'ox-groff)
+  (require 'ox-rss)
+  (require 'ox-s5)
+#+END_SRC
 * Basics
 #+BEGIN_SRC emacs-lisp
   (starter-kit-load "eshell")
@@ -8,7 +27,6 @@
   (starter-kit-load "misc-recommended")
   (starter-kit-load "ox")
   (starter-kit-load "org")
-  (starter-kit-load "python")
 #+END_SRC
 * Font-lock mode
 Set font-lock mode
@@ -59,10 +77,10 @@ Add some speed keys etc to org-mode:
 
 * Default frame alist
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "Monospace-16"))
-  (add-to-list 'default-frame-alist '(width . 95))
+  (setq default-frame-alist '((font . "Monospace-16")(width . 95)))
 #+END_SRC
 
+>>>>>>> 505bb85b517bc915fa38e3098e0ad6dde900ba6f
 * Code blocks
 This activates a number of widely used languages, you are encouraged
 to activate more languages using the customize interface for the
@@ -81,9 +99,6 @@ contains an up to date list of the currently supported languages.
      (js . t)
      (css . t)))
 #+END_SRC
-
-#+RESULTS:
-: ((emacs-lisp . t) (sh . t) (python . t) (js . t) (css . t))
 
 This line should preserve indentation for Python and allow native
 fontification.
@@ -113,18 +128,6 @@ Turn on ansi color mode for emacs shell.
 (setq eshell-output-filter-functions '())
 #+END_SRC
 
-* Use unified diffs
-Default to unified diffs
-
-#+BEGIN_SRC emacs-lisp
-(setq diff-switches "-u")
-#+END_SRC
-* Set browser
-Use firefox
-
-#+BEGIN_SRC emacs-lisp
-(setq browse-url-browser-function 'browse-url-firefox)
-#+END_SRC
 * Electric Pairs
 Install electric pairs for Python Mode. This snippet seems to work
 when I do "eval-region", but does not load during starter-kit load.
@@ -143,6 +146,97 @@ when I do "eval-region", but does not load during starter-kit load.
   (interactive)
   (let (parens-require-spaces)
     (insert-pair)))
+#+END_SRC
+
+* Better Defaults
+Based on http://www.pybloggers.com/emacs-the-best-python-editor/
+
+#+BEGIN_SRC emacs-lisp
+
+;; init.el --- Emacs configuration
+
+;; INSTALL PACKAGES
+;; --------------------------------------
+
+(require 'package)
+
+(add-to-list 'package-archives
+       '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+(defvar myPackages
+  '(better-defaults
+    elpy
+    material-theme))
+
+(mapc #'(lambda (package)
+    (unless (package-installed-p package)
+      (package-install package)))
+      myPackages)
+
+;; BASIC CUSTOMIZATION
+;; --------------------------------------
+
+(setq inhibit-startup-message t) ;; hide the startup message
+(load-theme 'material t) ;; load material theme
+
+;; init.el ends here
+#+END_SRC
+* Elpy
+#+BEGIN_SRC emacs-lisp
+(require 'elpy)
+(elpy-enable)
+(setq python-shell-interpreter "ipython")
+#+END_SRC
+
+* Company mode
+#+BEGIN_SRC emacs-lisp
+(require 'company)
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (setq-local company-backends '((company-files company-dabbrev)))))
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq-local company-backends '((company-capf company-dabbrev-code)))))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (setq-local company-backends '((company-capf company-jedi company-dabbrev-code company-files)))))
+(add-hook 'after-init-hook 'global-company-mode)
+#+END_SRC
+* org-mode enhancements
+Add some speed keys etc to org-mode:
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(add-hook 'org-mode-hook 'turn-on-font-lock)  ; Org buffers only
+; I prefer return to activate a link
+(setq org-return-follows-link t)
+; Let org help me catch invisible edits
+(setq org-catch-invisible-edits t)
+; Don't output xml validation during html export
+(setq org-export-html-validation-link nil)
+; Set up capture
+(setq org-default-notes-file (concat org-directory "~/org/notes.org"))
+     (define-key global-map "\C-cc" 'org-capture)
+; Org speed commands
+(setq org-use-speed-commands t)
+(setq org-agenda-custom-commands
+    '(("w" todo "WAITING" nil)
+      ("n" todo "NEXT" nil)
+      ("d" "Agenda + Next Actions" ((agenda) (todo "NEXT")))))
+(setq org-clock-persist 'history)
+(setq org-clock-persist t)
+(org-clock-persistence-insinuate)
+
+; Org Export suppress "validate" link
+(setq org-html-validation-link nil)
 #+END_SRC
 
 * Expand region
@@ -205,17 +299,108 @@ when I do "eval-region", but does not load during starter-kit load.
   (setq elpy-rpc-backend "jedi")
 #+END_SRC
 
-* company mode
-#+BEGIN_SRC emacs-lisp
-  (require 'company)
-  (require 'company-anaconda)
-  (global-company-mode)
-  (add-hook 'after-init-hook 'global-company-mode)
-#+END_SRC
-
 * Save history
 #+BEGIN_SRC emacs-lisp
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 #+END_SRC
-g
+
+* Skip
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+** Auto-complete
+Add auto-complete functionality.
+
+#+BEGIN_SRC emacs-lisp
+(require 'auto-complete)
+(require 'auto-complete-config)
+
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(global-auto-complete-mode t)
+(ac-config-default)
+#+END_SRC
+
+** jedi
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path (concat starter-kit-dir "/emacs-python-environment"))
+(add-to-list 'load-path (concat starter-kit-dir "/emacs-jedi"))
+(require 'python-environment)
+(require 'jedi)
+;; Standard Jedi.el setting
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+#+END_SRC
+
+** Anything
+
+Anything http://www.emacswiki.org/emacs/download/anything.el
+
+#+BEGIN_SRC emacs-lisp
+(require 'anything-config)
+(require 'anything-match-plugin)
+(global-set-key "\C-cs" 'anything)
+(global-set-key "\C-ce" 'anything-for-files)
+#+END_SRC
+
+** pylookup
+For looking up python stuff in the html docs.
+
+#+BEGIN_SRC emacs-lisp
+;; pylookup: Python documentation indexer
+(setq pylookup-dir (concat starter-kit-dir "/pylookup"))
+(add-to-list 'load-path pylookup-dir)
+
+;; load pylookup when compile time
+(eval-when-compile (require 'pylookup))
+
+;; set executable file and db file
+(setq pylookup-program (concat pylookup-dir "/pylookup.py"))
+(setq pylookup-db-file (concat pylookup-dir "/pylookup.db"))
+
+;; set search option if you want
+;; (setq pylookup-search-options '("--insensitive" "0" "--desc" "0"))
+
+;; to speedup, just load it on demand
+(autoload 'pylookup-lookup "pylookup"
+  "Lookup SEARCH-TERM in the Python HTML indexes." t)
+
+(autoload 'pylookup-update "pylookup"
+  "Run pylookup-update and create the database at `pylookup-db-file'." t)
+(global-set-key "\C-ch" 'pylookup-lookup)
+#+END_SRC
+
+#+RESULTS:
+: pylookup-lookup
+
+* El-get
+
+#+BEGIN_SRC emacs-lisp :results none
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+#+END_SRC
+* Pymacs and rope
+
+#+BEGIN_SRC emacs-lisp :results none
+;; Pymacs
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+(autoload 'pymacs-autoload "pymacs")
+
+(require 'pymacs)
+
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-confirm-saving 'nil)
+
+#+END_SRC
