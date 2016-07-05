@@ -150,6 +150,7 @@ when I do "eval-region", but does not load during starter-kit load.
 
 #+BEGIN_SRC emacs-lisp
 ;; Expand region
+(starter-kit-install-if-needed 'expand-region)
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 #+END_SRC
@@ -207,6 +208,7 @@ when I do "eval-region", but does not load during starter-kit load.
 * company mode
 #+BEGIN_SRC emacs-lisp
   (require 'company)
+  (starter-kit-install-if-needed 'company-anaconda)
   (require 'company-anaconda)
   (global-company-mode)
   (add-hook 'after-init-hook 'global-company-mode)
