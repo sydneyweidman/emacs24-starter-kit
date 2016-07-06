@@ -1,27 +1,5 @@
 #+TITLE: Starter Kit Extras
 #+OPTIONS: toc:nil num:nil ^:nil
-<<<<<<< HEAD
-* Export configuration
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "$ORG_HOME/contrib/lisp")
-  (require 'ox)
-  (require 'ox-ascii)
-  (require 'ox-beamer)
-  (require 'ox-html)
-  (require 'ox-icalendar)
-  (require 'ox-latex)
-  (require 'ox-man)
-  (require 'ox-md)
-  (require 'ox-odt)
-  (require 'ox-publish)
-  (require 'ox-texinfo)
-  (require 'ox-deck)
-  (require 'ox-groff)
-  (require 'ox-rss)
-  (require 'ox-s5)
-#+END_SRC
-=======
->>>>>>> master
 * Basics
 #+BEGIN_SRC emacs-lisp
   (starter-kit-load "eshell")
@@ -30,10 +8,6 @@
   (starter-kit-load "misc-recommended")
   (starter-kit-load "ox")
   (starter-kit-load "org")
-<<<<<<< HEAD
-=======
-  (starter-kit-load "python")
->>>>>>> master
 #+END_SRC
 * Font-lock mode
 Set font-lock mode
@@ -106,12 +80,6 @@ contains an up to date list of the currently supported languages.
      (css . t)))
 #+END_SRC
 
-<<<<<<< HEAD
-=======
-#+RESULTS:
-: ((emacs-lisp . t) (sh . t) (python . t) (js . t) (css . t))
-
->>>>>>> master
 This line should preserve indentation for Python and allow native
 fontification.
 
@@ -140,8 +108,6 @@ Turn on ansi color mode for emacs shell.
 (setq eshell-output-filter-functions '())
 #+END_SRC
 
-<<<<<<< HEAD
-=======
 * Use unified diffs
 Default to unified diffs
 
@@ -154,7 +120,6 @@ Use firefox
 #+BEGIN_SRC emacs-lisp
 (setq browse-url-browser-function 'browse-url-firefox)
 #+END_SRC
->>>>>>> master
 * Electric Pairs
 Install electric pairs for Python Mode. This snippet seems to work
 when I do "eval-region", but does not load during starter-kit load.
@@ -174,8 +139,6 @@ when I do "eval-region", but does not load during starter-kit load.
   (let (parens-require-spaces)
     (insert-pair)))
 #+END_SRC
-
-<<<<<<< HEAD
 * Better Defaults
 Based on http://www.pybloggers.com/emacs-the-best-python-editor/
 
@@ -267,18 +230,13 @@ Add some speed keys etc to org-mode:
 (setq org-html-validation-link nil)
 #+END_SRC
 
-=======
->>>>>>> master
 * Expand region
 
   - https://github.com/magnars/expand-region.el
 
 #+BEGIN_SRC emacs-lisp
 ;; Expand region
-<<<<<<< HEAD
-=======
 (starter-kit-install-if-needed 'expand-region)
->>>>>>> master
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 #+END_SRC
@@ -332,8 +290,6 @@ Add some speed keys etc to org-mode:
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
   (setq elpy-rpc-backend "jedi")
 #+END_SRC
-
-<<<<<<< HEAD
 * Save history
 #+BEGIN_SRC emacs-lisp
 (savehist-mode 1)
@@ -441,7 +397,6 @@ For looking up python stuff in the html docs.
 (setq ropemacs-confirm-saving 'nil)
 
 #+END_SRC
-=======
 * company mode
 #+BEGIN_SRC emacs-lisp
   (require 'company)
@@ -456,5 +411,4 @@ For looking up python stuff in the html docs.
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 #+END_SRC
-g
->>>>>>> master
+

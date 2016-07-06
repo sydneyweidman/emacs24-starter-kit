@@ -1,18 +1,22 @@
 #+TITLE: Starter Kit Extras
 #+OPTIONS: toc:nil num:nil ^:nil
-* Export functions
+* Export configuration
 #+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "$ORG_HOME/contrib/lisp")
   (require 'ox)
-  (require 'ox-beamer)
   (require 'ox-ascii)
+  (require 'ox-beamer)
   (require 'ox-html)
   (require 'ox-icalendar)
   (require 'ox-latex)
   (require 'ox-man)
   (require 'ox-md)
-  (require 'ox-texinfo)
+  (require 'ox-odt)
   (require 'ox-publish)
+  (require 'ox-texinfo)
+  (require 'ox-deck)
+  (require 'ox-groff)
   (require 'ox-rss)
   (require 'ox-s5)
-  (require 'ox-deck)
 #+END_SRC
+
