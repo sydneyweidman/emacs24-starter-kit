@@ -1,4 +1,4 @@
-#+TITLE: Starter Kit Extras
+#+TITLE: Export Functions
 #+OPTIONS: toc:nil num:nil ^:nil
 * Export configuration
 #+BEGIN_SRC emacs-lisp

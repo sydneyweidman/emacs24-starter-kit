@@ -143,14 +143,7 @@ when I do "eval-region", but does not load during starter-kit load.
 Based on http://www.pybloggers.com/emacs-the-best-python-editor/
 
 #+BEGIN_SRC emacs-lisp
-
-;; init.el --- Emacs configuration
-
-;; INSTALL PACKAGES
-;; --------------------------------------
-
 (require 'package)
-
 (add-to-list 'package-archives
        '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
@@ -167,13 +160,9 @@ Based on http://www.pybloggers.com/emacs-the-best-python-editor/
       (package-install package)))
       myPackages)
 
-;; BASIC CUSTOMIZATION
-;; --------------------------------------
 
 (setq inhibit-startup-message t) ;; hide the startup message
 (load-theme 'material t) ;; load material theme
-
-;; init.el ends here
 #+END_SRC
 * Elpy
 #+BEGIN_SRC emacs-lisp
@@ -184,7 +173,10 @@ Based on http://www.pybloggers.com/emacs-the-best-python-editor/
 
 * Company mode
 #+BEGIN_SRC emacs-lisp
+(starter-kit-install-if-needed 'company)
+(starter-kit-install-if-needed 'company-anaconda)
 (require 'company)
+(require 'company-anaconda)
 
 (add-hook 'org-mode-hook
           (lambda ()
