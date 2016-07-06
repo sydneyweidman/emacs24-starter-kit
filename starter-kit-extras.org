@@ -198,6 +198,7 @@ when I do "eval-region", but does not load during starter-kit load.
   (require 'py-autopep8)
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
   (setq elpy-rpc-backend "jedi")
+  (setq python-shell-interpreter "ipython")
 #+END_SRC
 * El-get
 
