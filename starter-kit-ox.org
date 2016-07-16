@@ -2,7 +2,6 @@
 #+OPTIONS: toc:nil num:nil ^:nil
 * Export configuration
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "$ORG_HOME/contrib/lisp")
   (require 'ox)
   (require 'ox-ascii)
   (require 'ox-beamer)
