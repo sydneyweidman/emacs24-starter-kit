@@ -52,8 +52,10 @@ Add some speed keys etc to org-mode:
                      :minutes ":%02d"
                      :require-minutes t)))
 ; Refile targets
-(setq org-refile-targets (quote ((org-agenda-files :maxlevel . 4))))
-(setq org-refile-use-outline-path t)
+(setq org-refile-targets '((nil :maxlevel . 3)
+                                (org-agenda-files :maxlevel . 3)))
+(setq org-outline-path-complete-in-steps t)         ; Refile in a single go
+(setq org-refile-use-outline-path t)                  ; Show full paths for refiling
 #+END_SRC
 
 * Default frame alist
@@ -250,3 +252,11 @@ when I do "eval-region", but does not load during starter-kit load.
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 #+END_SRC
 
+* Pyvenv fix
+
+Pyvenv doesn't like virtualenvwrapper hooks
+
+#+BEGIN_SRC emacs-lisp
+(defun pyvenv-hook-dir ()
+  nil)
+#+END_SRC
