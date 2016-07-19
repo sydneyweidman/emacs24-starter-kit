@@ -1,6 +1,18 @@
 #+TITLE: Starter Kit Extras
 #+OPTIONS: toc:nil num:nil ^:nil
 * Basics
+
+Make sure to set the ORG_HOME environment variable and add the
+following to your username.org file in .emacs.d:
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(add-to-list 'load-path (concat (getenv "ORG_HOME") "/lisp"))
+(add-to-list 'load-path (concat (getenv "ORG_HOME") "/contrib/lisp"))
+#+END_SRC
+
+otherwise, some of the org-export packages in the contrib directory
+will not be loaded.
+
 #+BEGIN_SRC emacs-lisp
   (starter-kit-load "eshell")
   (starter-kit-load "js")
@@ -246,5 +258,23 @@ when I do "eval-region", but does not load during starter-kit load.
 #+BEGIN_SRC emacs-lisp
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+#+END_SRC
+
+* Web-mode
+#+BEGIN_SRC emacs-lisp
+(if (not (package-installed-p 'web-mode)) 
+    (package-install 'web-mode))
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(setq web-mode-engines-alist '(("django" . "\\.html\\'")))
+
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+
+(setq web-mode-enable-auto-pairing t)
+(setq web-mode-enable-auto-expanding t)
+(setq web-mode-enable-css-colorization t)
 #+END_SRC
 
