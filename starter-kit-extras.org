@@ -64,8 +64,10 @@ Add some speed keys etc to org-mode:
                      :minutes ":%02d"
                      :require-minutes t)))
 ; Refile targets
-(setq org-refile-targets (quote ((org-agenda-files :maxlevel . 4))))
-(setq org-refile-use-outline-path t)
+(setq org-refile-targets '((nil :maxlevel . 3)
+                                (org-agenda-files :maxlevel . 3)))
+(setq org-outline-path-complete-in-steps t)         ; Refile in a single go
+(setq org-refile-use-outline-path t)                  ; Show full paths for refiling
 #+END_SRC
 
 * Default frame alist
@@ -167,15 +169,17 @@ when I do "eval-region", but does not load during starter-kit load.
 #+END_SRC
 * Elpy and Better Defaults
 #+BEGIN_SRC emacs-lisp
-  ;; INSTALL PACKAGES
-  ;; --------------------------------------
+ (require 'package)
 
-  (require 'package)
+ (setq package-archives '())
+ (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+ (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+ (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 
-  (add-to-list 'package-archives
-         '("melpa" . "http://melpa.org/packages/") t)
+;; (package-refresh-contents)
 
-  (package-initialize)
+ (package-initialize)
+
   (when (not package-archive-contents)
     (package-refresh-contents))
 
@@ -259,7 +263,6 @@ when I do "eval-region", but does not load during starter-kit load.
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 #+END_SRC
-
 * Web-mode
 #+BEGIN_SRC emacs-lisp
 (if (not (package-installed-p 'web-mode)) 
@@ -277,4 +280,11 @@ when I do "eval-region", but does not load during starter-kit load.
 (setq web-mode-enable-auto-expanding t)
 (setq web-mode-enable-css-colorization t)
 #+END_SRC
+* Pyvenv fix
 
+Pyvenv doesn't like virtualenvwrapper hooks
+
+#+BEGIN_SRC emacs-lisp
+(defun pyvenv-hook-dir ()
+  nil)
+#+END_SRC
