@@ -22,8 +22,6 @@ image-dired/*
 elim/*
 doc/*
 elpa/*
-el-get/*
-semanticdb/*
 src/*
 themes/*
 url/*
@@ -50,32 +48,21 @@ mail
 *.SCORE
 marks
 .session
-<<<<<<< HEAD
-/session.*
-=======
 session.*
->>>>>>> master
 abbrev_defs
 scratch
 secret.org
 .emacs.desktop*
 .*~
-*~
 agent/*
 
 ## package directory
 !literate-starter-kit-pkg.el
 literate-starter-kit/
 literate-starter-kit.tar
-<<<<<<< HEAD
-/bookmarks
-/history
-/session.*
-=======
 *.sav
 snippets
 /%backup%~
 .python-environments/
 /bookmarks
 /history
->>>>>>> master
