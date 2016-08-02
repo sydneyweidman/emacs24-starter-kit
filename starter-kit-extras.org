@@ -1,6 +1,18 @@
 #+TITLE: Starter Kit Extras
 #+OPTIONS: toc:nil num:nil ^:nil
 * Basics
+
+Make sure to set the ORG_HOME environment variable and add the
+following to your username.org file in .emacs.d:
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(add-to-list 'load-path (concat (getenv "ORG_HOME") "/lisp"))
+(add-to-list 'load-path (concat (getenv "ORG_HOME") "/contrib/lisp"))
+#+END_SRC
+
+otherwise, some of the org-export packages in the contrib directory
+will not be loaded.
+
 #+BEGIN_SRC emacs-lisp
   (starter-kit-load "eshell")
   (starter-kit-load "js")
@@ -8,7 +20,6 @@
   (starter-kit-load "misc-recommended")
   (starter-kit-load "ox")
   (starter-kit-load "org")
-  (starter-kit-load "python")
 #+END_SRC
 * Font-lock mode
 Set font-lock mode
@@ -53,8 +64,10 @@ Add some speed keys etc to org-mode:
                      :minutes ":%02d"
                      :require-minutes t)))
 ; Refile targets
-(setq org-refile-targets (quote ((org-agenda-files :maxlevel . 4))))
-(setq org-refile-use-outline-path t)
+(setq org-refile-targets '((nil :maxlevel . 3)
+                                (org-agenda-files :maxlevel . 3)))
+(setq org-outline-path-complete-in-steps t)         ; Refile in a single go
+(setq org-refile-use-outline-path t)                  ; Show full paths for refiling
 #+END_SRC
 
 * Default frame alist
@@ -80,9 +93,6 @@ contains an up to date list of the currently supported languages.
      (js . t)
      (css . t)))
 #+END_SRC
-
-#+RESULTS:
-: ((emacs-lisp . t) (sh . t) (python . t) (js . t) (css . t))
 
 This line should preserve indentation for Python and allow native
 fontification.
@@ -143,7 +153,6 @@ when I do "eval-region", but does not load during starter-kit load.
   (let (parens-require-spaces)
     (insert-pair)))
 #+END_SRC
-
 * Expand region
 
   - https://github.com/magnars/expand-region.el
@@ -160,15 +169,17 @@ when I do "eval-region", but does not load during starter-kit load.
 #+END_SRC
 * Elpy and Better Defaults
 #+BEGIN_SRC emacs-lisp
-  ;; INSTALL PACKAGES
-  ;; --------------------------------------
+ (require 'package)
 
-  (require 'package)
+ (setq package-archives '())
+ (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+ (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+ (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 
-  (add-to-list 'package-archives
-         '("melpa" . "http://melpa.org/packages/") t)
+;; (package-refresh-contents)
 
-  (package-initialize)
+ (package-initialize)
+
   (when (not package-archive-contents)
     (package-refresh-contents))
 
@@ -203,8 +214,41 @@ when I do "eval-region", but does not load during starter-kit load.
   (require 'py-autopep8)
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
   (setq elpy-rpc-backend "jedi")
+  (setq python-shell-interpreter "ipython")
 #+END_SRC
+* El-get
 
+#+BEGIN_SRC emacs-lisp :results none
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+#+END_SRC
+* Pymacs and rope
+
+#+BEGIN_SRC emacs-lisp :results none
+;; Pymacs
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/pymacs")
+
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+(autoload 'pymacs-autoload "pymacs")
+
+(require 'pymacs)
+
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-confirm-saving 'nil)
+
+#+END_SRC
 * company mode
 #+BEGIN_SRC emacs-lisp
   (require 'company)
@@ -219,4 +263,36 @@ when I do "eval-region", but does not load during starter-kit load.
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 #+END_SRC
-g
+* Pyvenv fix
+
+Pyvenv doesn't like virtualenvwrapper hooks
+
+#+BEGIN_SRC emacs-lisp
+(defun pyvenv-hook-dir ()
+  nil)
+#+END_SRC
+
+* Web-mode
+#+BEGIN_SRC emacs-lisp
+(if (not (package-installed-p 'web-mode))
+    (package-install 'web-mode))
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(setq web-mode-engines-alist '(("django" . "\\.html\\'")))
+
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+
+(setq web-mode-enable-auto-pairing t)
+(setq web-mode-enable-auto-expanding t)
+(setq web-mode-enable-css-colorization t)
+#+END_SRC
