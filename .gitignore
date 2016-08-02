@@ -61,7 +61,7 @@ agent/*
 literate-starter-kit/
 literate-starter-kit.tar
 *.sav
-snippets
+/snippets
 /%backup%~
 .python-environments/
 /bookmarks
