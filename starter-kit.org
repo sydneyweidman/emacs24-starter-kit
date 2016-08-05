@@ -147,14 +147,14 @@ general starter-kit updates without conflict.
      that look useful into your personal config, or simply by loading
      the entire file directly with the following.
      #+begin_src emacs-lisp
-      ;; (starter-kit-load "python")
+       ;; (starter-kit-load "python")
      #+end_src
 
      Alternately you can load only one particular subsection of an
      included file, for example to load just the "pretty-summary"
      section of =starter-kit-gnus.org= run the following.
      #+begin_src emacs-lisp
-     ;; (starter-kit-load "gnus" "pretty-summary")
+       ;; (starter-kit-load "gnus" "pretty-summary")
      #+end_src
      
      Finally you can load just those subsections of a file which have
@@ -163,7 +163,7 @@ general starter-kit updates without conflict.
      the following to your personal initialization.  Note: header id's
      take priority over tags.
      #+begin_src emacs-lisp
-     ;;  (starter-kit-load "gnus" "visual")
+       ;; (starter-kit-load "gnus" "visual")
      #+end_src
 
 - Installing more elisp libraries :: The easiest way to install new
@@ -284,8 +284,7 @@ interested in the actual code implementing the starter kit.
 - ELPA archive repositories and two packages to install by default.
   #+begin_src emacs-lisp
     (setq package-archives
-  	'(("gnu"         . "http://elpa.gnu.org/packages/")
-            ("org"         . "http://orgmode.org/elpa/")
+          '(("org"         . "http://orgmode.org/elpa/")
             ("melpa"       . "http://melpa.org/packages/")))
     (package-initialize)
 
@@ -296,9 +295,9 @@ interested in the actual code implementing the starter kit.
       "Install PACKAGES using ELPA if they are not loadable or installed locally."
       (when packages
         (unless package-archive-contents
-  	(package-refresh-contents))
+          (package-refresh-contents))
         (dolist (package packages)
-  	(unless (or (starter-kit-loadable-p package)
+          (unless (or (starter-kit-loadable-p package)
                       (package-installed-p package))
             (package-install package)))))
   #+end_src
@@ -343,17 +342,17 @@ interested in the actual code implementing the starter kit.
                               (org-link-search (concat"#"header-or-tag))
                               (org-narrow-to-subtree)
                               (buffer-string))
-  			(error ;; collect all entries with as tags
-  			 (let (body)
+                          (error ;; collect all entries with as tags
+                           (let (body)
                              (org-map-entries
                               (lambda ()
                                 (save-restriction
-  				(org-narrow-to-subtree)
-  				(setq body (concat body "\n" (buffer-string)))))
+                                  (org-narrow-to-subtree)
+                                  (setq body (concat body "\n" (buffer-string)))))
                               header-or-tag)
                              body))))))))
                partial-file)
-  	 file))))
+           file))))
   #+end_src
 
 - Work around a bug on OS X where system-name is FQDN.

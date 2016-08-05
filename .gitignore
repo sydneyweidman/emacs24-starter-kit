@@ -47,6 +47,7 @@ mail
 #.newsrc-dribble#
 *.SCORE
 marks
+/session.*
 .session
 session.*
 abbrev_defs
