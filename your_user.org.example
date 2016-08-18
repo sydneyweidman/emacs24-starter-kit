@@ -1,0 +1,15 @@
+* Basics
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "/path/to/org-mode-git-repo/contrib/lisp")
+  (add-to-list 'load-path "/path/to/org-mode-git-repo/org-mode/lisp")
+  (starter-kit-load "extras")
+#+END_SRC
+* Font
+#+BEGIN_SRC emacs-lisp
+(setq default-frame-alist '((font . "Monospace-16") (width . 95) (height . 30)))
+#+END_SRC
+* Org-mode personalization
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files '("~/org/work.org" "~/org/personal.org"))
+#+END_SRC
+
