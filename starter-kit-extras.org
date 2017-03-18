@@ -72,7 +72,7 @@ Add some speed keys etc to org-mode:
 
 * Default frame alist
 #+BEGIN_SRC emacs-lisp
-  (setq initial-frame-alist '((font . "Monospace-16")(width . 95)(top . 0)(left . 0)(fullscreen . t)))
+  (setq default-frame-alist '((font . "Monospace-14")(width . 95)(top . 0)(left . 0)(fullscreen . t)(maximize . t)))
 #+END_SRC
 
 * Code blocks
