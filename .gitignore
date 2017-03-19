@@ -67,3 +67,8 @@ literate-starter-kit.tar
 .python-environments/
 /bookmarks
 /history
+.#session.*
+el-get/
+/network-security.data
+/src/emacs-pkg-install.el
+/sweidman.org
