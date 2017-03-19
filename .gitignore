@@ -61,9 +61,13 @@ agent/*
 literate-starter-kit/
 literate-starter-kit.tar
 *.sav
-snippets
+/snippets
 /%backup%~
 .python-environments/
 /bookmarks
 /history
+.#session.*
+el-get/
+/network-security.data
+/src/emacs-pkg-install.el
 /sweidman.org
