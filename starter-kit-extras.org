@@ -70,11 +70,6 @@ Add some speed keys etc to org-mode:
 (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
 #+END_SRC
 
-* Default frame alist
-#+BEGIN_SRC emacs-lisp
-  (setq default-frame-alist '((font . "Monospace-14")(width . 95)(top . 0)(left . 0)(fullscreen . t)(maximize . t)))
-#+END_SRC
-
 * Code blocks
 This activates a number of widely used languages, you are encouraged
 to activate more languages using the customize interface for the
@@ -187,6 +182,7 @@ when I do "eval-region", but does not load during starter-kit load.
     '(better-defaults
       elpy
       flycheck
+      virtualenvwrapper
       material-theme
       py-autopep8))
 
@@ -229,6 +225,25 @@ when I do "eval-region", but does not load during starter-kit load.
 
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (el-get 'sync)
+#+END_SRC
+* Virtualenvwrapper
+
+This is an elisp re-implementation of Doug Hellmann's
+virtualenvwrapper.
+
+#+BEGIN_SRC elisp
+(require 'virtualenvwrapper)
+(venv-initialize-interactive-shells) ;; if you want interactive shell support
+(venv-initialize-eshell) ;; if you want eshell support
+;; note that setting `venv-location` is not necessary if you
+;; use the default location (`~/.virtualenvs`), or if the
+;; the environment variable `WORKON_HOME` points to the right place
+(setq venv-location "~/.virtualenvs/")
+
+;; Hooks
+(add-hook 'venv-postmkvirtualenv-hook
+          (lambda () (shell-command "pip install autopep8 rope ropemacs jedi importmagic flake8 virtualenvwrapper")))
+
 #+END_SRC
 * Pymacs and rope
 
