@@ -247,7 +247,7 @@ virtualenvwrapper.
 #+END_SRC
 * Pymacs and rope
 
-#+BEGIN_SRC emacs-lisp :results none
+#+BEGIN_SRC emacs-lisp
 ;; Pymacs
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/pymacs")
 
@@ -278,15 +278,6 @@ virtualenvwrapper.
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 #+END_SRC
-* Pyvenv fix
-
-Pyvenv doesn't like virtualenvwrapper hooks
-
-#+BEGIN_SRC emacs-lisp
-(defun pyvenv-hook-dir ()
-  nil)
-#+END_SRC
-
 * Web-mode
 #+BEGIN_SRC emacs-lisp
 (if (not (package-installed-p 'web-mode))
@@ -311,3 +302,19 @@ Pyvenv doesn't like virtualenvwrapper hooks
 (setq web-mode-enable-auto-expanding t)
 (setq web-mode-enable-css-colorization t)
 #+END_SRC
+* Projectile
+
+Project management for emacs.
+
+[[http://batsov.com/projectile/][Projectile]]
+
+#+BEGIN_SRC emacs-lisp
+(starter-kit-install-if-needed 'projectile)
+(require 'projectile)
+(projectile-global-mode)
+
+;; add flx-ido package as per instructions
+(starter-kit-install-if-needed 'flx-ido)
+(require 'flx-ido)
+#+END_SRC
+
