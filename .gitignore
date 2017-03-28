@@ -73,3 +73,7 @@ el-get/
 /src/emacs-pkg-install.el
 /sweidman.org
 /projectile-bookmarks.eld
+/projectile.cache
+src/py-autopep8.el/
+/TAGS
+games/
