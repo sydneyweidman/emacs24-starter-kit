@@ -287,19 +287,42 @@ when I do "eval-region", but does not load during starter-kit load.
 (setq web-mode-enable-auto-expanding t)
 (setq web-mode-enable-css-colorization t)
 #+END_SRC
-* Projectile
+* Projectile and Helm
 
 Project management for emacs.
 
 [[http://batsov.com/projectile/][Projectile]]
 
 #+BEGIN_SRC emacs-lisp
-(starter-kit-install-if-needed 'projectile)
-(require 'projectile)
-(projectile-global-mode)
-
 ;; add flx-ido package as per instructions
 (starter-kit-install-if-needed 'flx-ido)
 (require 'flx-ido)
+
+
+(starter-kit-install-if-needed 'projectile)
+(require 'projectile)
+(starter-kit-install-if-needed 'helm-projectile)
+(require 'helm-projectile)
+(projectile-global-mode)
+
+(global-set-key (kbd "C-x f") 'helm-find)
+
+;; turns on projectile mode by default for all file types
+(projectile-global-mode)
+
+;; asks for file to open when project is switched
+(setq projectile-switch-project-action 'helm-projectile-find-file)
+
+;; turns on helm bindings for projectile
+(helm-projectile-on)
+
+;; turns on projectile mode by default for all file types
+(projectile-global-mode)
+
+;; asks for file to open when project is switched
+(setq projectile-switch-project-action 'helm-projectile-find-file)
+
+;; turns on helm bindings for projectile
+(helm-projectile-on)
 #+END_SRC
 
