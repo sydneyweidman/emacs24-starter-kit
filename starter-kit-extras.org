@@ -167,6 +167,10 @@ when I do "eval-region", but does not load during starter-kit load.
 #+BEGIN_SRC emacs-lisp 
   (menu-bar-mode 1)
 #+END_SRC
+* Display Time in Modeline
+#+BEGIN_SRC emacs-lisp
+(display-time-mode)
+#+END_SRC
 * Elpy and Better Defaults
 #+BEGIN_SRC emacs-lisp
  (require 'package)
@@ -327,24 +331,13 @@ Project management for emacs.
 
 (global-set-key (kbd "C-x f") 'helm-find)
 
-;; turns on projectile mode by default for all file types
-(projectile-global-mode)
-
-;; asks for file to open when project is switched
-(setq projectile-switch-project-action 'helm-projectile-find-file)
-
-;; turns on helm bindings for projectile
-(helm-projectile-on)
-
-;; turns on projectile mode by default for all file types
-(projectile-global-mode)
-
 ;; asks for file to open when project is switched
 (setq projectile-switch-project-action 'helm-projectile-find-file)
 
 ;; turns on helm bindings for projectile
 (helm-projectile-on)
 #+END_SRC
+
 * Window move commands
 #+BEGIN_SRC emacs-lisp
 ; (define-key org-mode-map (kbd "<S-up>") nil)
