@@ -251,7 +251,7 @@ virtualenvwrapper.
 
 ;; Hooks
 (add-hook 'venv-postmkvirtualenv-hook
-          (lambda () (shell-command "pip install autopep8 rope ropemacs jedi importmagic flake8 virtualenvwrapper")))
+          (lambda () (shell-command "/bin/bash ~/.virtualenvs/postmkvirtualenv")))
 
 #+END_SRC
 * Pymacs and rope
