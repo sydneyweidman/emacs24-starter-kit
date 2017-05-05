@@ -167,6 +167,20 @@ when I do "eval-region", but does not load during starter-kit load.
 #+BEGIN_SRC emacs-lisp 
   (menu-bar-mode 1)
 #+END_SRC
+* visual-regex
+
+Install and configure [[https://github.com/benma/visual-regexp.el][visual-regex]]
+
+#+BEGIN_SRC emacs-lisp
+;; Install visual-regex package
+(starter-kit-install-if-needed "visual-regexp")
+(require 'visual-regexp)
+
+;; Set the key bindings
+(define-key global-map (kbd "C-c r") 'vr/replace)
+(define-key global-map (kbd "C-c q") 'vr/query-replace)
+(define-key global-map (kbd "C-c m") 'vr/mc-mark)
+#+END_SRC
 * Display Time in Modeline
 #+BEGIN_SRC emacs-lisp
 (display-time-mode)
@@ -258,6 +272,8 @@ virtualenvwrapper.
 
 #+BEGIN_SRC emacs-lisp
 ;; Pymacs
+(el-get-install "pymacs")
+
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/pymacs")
 
 (autoload 'pymacs-apply "pymacs")
