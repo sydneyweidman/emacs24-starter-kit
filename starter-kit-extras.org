@@ -331,11 +331,6 @@ Project management for emacs.
   (helm-projectile-on)
 #+END_SRC
 
-* Window move commands
-#+BEGIN_SRC emacs-lisp
-; (define-key org-mode-map (kbd "<S-up>") nil)
-; (define-key org-mode-map (kbd "<S-down>") nil)
-#+END_SRC
 * ediff window setup
 #+BEGIN_SRC emacs-lisp
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
