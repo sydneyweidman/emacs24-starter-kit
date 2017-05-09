@@ -70,7 +70,7 @@ Add some speed keys etc to org-mode:
 (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
 #+END_SRC
 
-* Default frame alist
+* Initial frame alist
 #+BEGIN_SRC emacs-lisp
   (setq initial-frame-alist '((font . "Monospace-14")(width . 95)(top . 0)(left . 0)(fullscreen . t)))
 #+END_SRC
@@ -116,18 +116,6 @@ Turn on ansi color mode for emacs shell.
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 #+END_SRC
 
-* eshell initialization
-
-#+BEGIN_SRC emacs-lisp
-(setq eshell-output-filter-functions '())
-#+END_SRC
-
-* Use unified diffs
-Default to unified diffs
-
-#+BEGIN_SRC emacs-lisp
-(setq diff-switches "-u")
-#+END_SRC
 * Set browser
 Use firefox
 
@@ -171,13 +159,47 @@ when I do "eval-region", but does not load during starter-kit load.
 #+BEGIN_SRC emacs-lisp
 (display-time-mode)
 #+END_SRC
+* El-get
+
+#+BEGIN_SRC emacs-lisp :results none
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+#+END_SRC
+* Pymacs and rope
+
+#+BEGIN_SRC emacs-lisp
+;; Pymacs
+(el-get-install "pymacs")
+
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/pymacs")
+
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+(autoload 'pymacs-autoload "pymacs")
+
+(require 'pymacs)
+
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-confirm-saving 'nil)
+
+#+END_SRC
 * Elpy and Better Defaults
 #+BEGIN_SRC emacs-lisp
  (require 'package)
 
  (setq package-archives '())
  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
- (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 
 ;; (package-refresh-contents)
@@ -221,26 +243,12 @@ when I do "eval-region", but does not load during starter-kit load.
   (setq elpy-rpc-backend "jedi")
   (setq python-shell-interpreter "ipython")
 #+END_SRC
-* El-get
-
-#+BEGIN_SRC emacs-lisp :results none
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-(el-get 'sync)
-#+END_SRC
 * Virtualenvwrapper
 
 This is an elisp re-implementation of Doug Hellmann's
 virtualenvwrapper.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (require 'virtualenvwrapper)
 (venv-initialize-interactive-shells) ;; if you want interactive shell support
 (venv-initialize-eshell) ;; if you want eshell support
@@ -254,29 +262,8 @@ virtualenvwrapper.
           (lambda () (shell-command "/bin/bash ~/.virtualenvs/postmkvirtualenv")))
 
 #+END_SRC
-* Pymacs and rope
-
-#+BEGIN_SRC emacs-lisp
-;; Pymacs
-(el-get-install "pymacs")
-
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/pymacs")
-
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-(autoload 'pymacs-autoload "pymacs")
-
-(require 'pymacs)
-
-(pymacs-load "ropemacs" "rope-")
-(setq ropemacs-confirm-saving 'nil)
-
-#+END_SRC
 * company mode
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (require 'company)
   (starter-kit-install-if-needed 'company-anaconda)
   (require 'company-anaconda)
@@ -320,24 +307,28 @@ Project management for emacs.
 [[http://batsov.com/projectile/][Projectile]]
 
 #+BEGIN_SRC emacs-lisp
-;; add flx-ido package as per instructions
-(starter-kit-install-if-needed 'flx-ido)
-(require 'flx-ido)
+  ;; add flx-ido package as per instructions
+  (if (not (package-installed-p 'flx-ido))
+      (package-install 'flx-ido))
+  (require 'flx-ido)
 
+  (if (not (package-installed-p 'projectile))
+      (package-install 'projectile))
+  (require 'projectile)
 
-(starter-kit-install-if-needed 'projectile)
-(require 'projectile)
-(starter-kit-install-if-needed 'helm-projectile)
-(require 'helm-projectile)
-(projectile-global-mode)
+  (if (not (package-installed-p 'helm-projectile))
+      (package-install 'helm-projectile))
+  (require 'helm-projectile)
 
-(global-set-key (kbd "C-x f") 'helm-find)
+  (projectile-global-mode)
 
-;; asks for file to open when project is switched
-(setq projectile-switch-project-action 'helm-projectile-find-file)
+  (global-set-key (kbd "C-x f") 'helm-find)
 
-;; turns on helm bindings for projectile
-(helm-projectile-on)
+  ;; asks for file to open when project is switched
+  (setq projectile-switch-project-action 'helm-projectile-find-file)
+
+  ;; turns on helm bindings for projectile
+  (helm-projectile-on)
 #+END_SRC
 
 * Window move commands
