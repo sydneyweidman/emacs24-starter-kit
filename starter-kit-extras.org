@@ -14,6 +14,11 @@ otherwise, some of the org-export packages in the contrib directory
 will not be loaded.
 
 #+BEGIN_SRC emacs-lisp
+;; Commented out by sw 2017-06-15
+;; due to error loading (e.g.) magit after eshell:
+;; Eager macro-expansion failure: (void-variable eshell-output-filter-functions)
+;; if: Symbol’s value as variable is void: eshell-output-filter-functions
+  (setq eshell-output-filter-functions ())
   (starter-kit-load "eshell")
   (starter-kit-load "js")
   (starter-kit-load "lisp")
